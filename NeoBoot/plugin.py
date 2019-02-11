@@ -43,8 +43,8 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.15'
+PLUGINVERSION = '2.00 '
+UPDATEVERSION = '0.00'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1060,9 +1060,9 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             self.session.open(MessageBox, _('Canceled update.'), MessageBox.TYPE_INFO, 7)
                                            
     def chackupdate3(self):
-        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;curl -O --ftp-ssl https://raw.githubusercontent.com/gutosie/neoboot/master/ver.txt;sleep 3;cd /')            
+        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;curl -O --ftp-ssl https://raw.githubusercontent.com/gutosie/neoboot2/master/ver.txt;sleep 3;cd /')            
         if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt'):
-            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;fullwget --no-check-certificate https://raw.githubusercontent.com/gutosie/neoboot/master/ver.txt; sleep 3;cd /')
+            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;fullwget --no-check-certificate https://raw.githubusercontent.com/gutosie/neoboot2/master/ver.txt; sleep 3;cd /')
             if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt'):
                 self.session.open(MessageBox, _('Unfortunately, at the moment not found an update, try again later.'), MessageBox.TYPE_INFO, 8)
         else:
@@ -1082,9 +1082,9 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         if yesno:
             if fileExists('/tmp/*.zip'):
                 os.system('rm /tmp/*.zip')
-            os.system('cd /tmp; curl -O --ftp-ssl https://codeload.github.com/gutosie/neoboot/zip/master; mv /tmp/master /tmp/neoboot.zip; cd /')
+            os.system('cd /tmp; curl -O --ftp-ssl https://codeload.github.com/gutosie/neoboot2/zip/master; mv /tmp/master /tmp/neoboot.zip; cd /')
             if not fileExists('/tmp/neoboot.zip'):
-                    os.system('cd /tmp;fullwget --no-check-certificate https://codeload.github.com/gutosie/neoboot/zip/master; mv /tmp/master /tmp/neoboot.zip; sleep 3;cd ')
+                    os.system('cd /tmp;fullwget --no-check-certificate https://codeload.github.com/gutosie/neoboot2/zip/master; mv /tmp/master /tmp/neoboot.zip; sleep 3;cd ')
                     if not fileExists('/tmp/neoboot.zip'):
                         self.session.open(MessageBox, _('Unfortunately, at the moment not found an update, try again later.'), MessageBox.TYPE_INFO, 8)
             else:                                                                                                                                                                                                                                                                                                                                                   
