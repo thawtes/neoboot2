@@ -25,6 +25,7 @@ mv -f /tmp/neoboot2-master/NeoBoot/* $Cel/NeoBoot
 [ -e /tmp/neoboot2-master ] && rm -rf /tmp/neoboot2-master
 cd $Cel/NeoBoot
 chmod 755 ./bin/*
+chmod 755 ./target/*
 chmod 755 ./ex_init.py
 chmod 755 ./files/*.sh
 chmod -R +x ./ubi_reader/*
