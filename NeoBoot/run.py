@@ -92,13 +92,13 @@ class StartImage(Screen):
             self.StartImageInNeoBoot()
 
     def StartImageInNeoBoot(self):                              
-        if fileExists('/media/neoboot/ImageBoot/%s/.control_ok ' % ( getImageNeoBoot())):
+        if fileExists('/media/neoboot/ImageBoot/%s/.control_ok' % ( getImageNeoBoot())):
             system('touch /tmp/.control_ok ') 
-        elif not fileExists('/media/neoboot/ImageBoot/%s/.control_ok ' % ( getImageNeoBoot())):
-            system('touch /media/neoboot/ImageBoot/%s//.control_boot_new_image ' % ( getImageNeoBoot()))
+        else:
+                system('touch /media/neoboot/ImageBoot/%s/.control_boot_new_image ' % ( getImageNeoBoot()))
 
 ####################################
-        system('sync; echo 3 > /proc/sys/vm/drop_caches; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/*')               
+        system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/*')               
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]     
