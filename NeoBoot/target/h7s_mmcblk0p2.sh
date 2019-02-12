@@ -35,8 +35,8 @@ if [ $TARGET = "Flash" ]; then
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk ] ; then
                                     echo "Boot FLASH. Instalacja kernel do /dev/mmcblk0p2..."                                    
                                     if [ -d /proc/stb ] ; then
-                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.pyo
-                                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin conv=noerror conv=sync of=/dev/mmcblk0p2
+                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py
+                                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin conv=noerror conv=sync of=/dev/kernel
                                     fi
                                     true                                                                                 
                                     echo "Przenoszenie pliku kernel do /tmp..."
@@ -59,8 +59,8 @@ if [ $TARGET = "Flash" ]; then
                                         cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init
                                         echo "REBOOT FLASH. Instalacja kernel do /dev/mmcblk0p2..."                                    
                                         if [ -d /proc/stb ] ; then
-                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.pyo
-                                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin conv=noerror conv=sync of=/dev/mmcblk0p2
+                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py
+                                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin conv=noerror conv=sync of=/dev/kernel
                                         fi
                                         true                                     
                                         echo "Przenoszenie pliku kernel do /tmp..."
@@ -94,8 +94,8 @@ else
                                     echo "Instalacja kernel do /dev/mmcblk0p2..."
                                     sleep 2                                     
                                         if [ -d /proc/stb ] ; then
-                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.pyo
-                                                    dd if=/tmp/zImage of=/dev/mmcblk0p2
+                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py
+                                                    dd if=/tmp/zImage of=/dev/kernel
                                         fi
                                         rm -f /tmp/zImage
                                         true 
@@ -113,8 +113,8 @@ else
                                     echo "Instalacja kernel do /dev/mmcblk0p2..."
                                     sleep 2 
                                     if [ -d /proc/stb ] ; then
-                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.pyo
-                                                    dd if=/tmp/zImage of=/dev/mmcblk0p2
+                                                    python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py
+                                                    dd if=/tmp/zImage of=/dev/kernel
                                     fi
                                     rm -f /tmp/zImage
                                     true                                    
