@@ -646,8 +646,7 @@ class NeoBootInstallation(Screen):
                     #Octagon SF4008   
                     elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008':
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarm; cd')  
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')  
                         os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarm')
                         os.system('opkg download kernel-image')
                         os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())                    
@@ -656,11 +655,11 @@ class NeoBootInstallation(Screen):
                     #Zgemma h7S  arm  
                     elif getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarm; cd')  
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; cd') 
                         os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarm')
                         os.system('opkg download kernel-image')
-                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())                    
+                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName()) 
+                        os.system('python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py')                   
                         os.system('dd if=/dev/kernel of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
 
                     #VUPLUS MIPS                                                                                                                                                                                                                 
@@ -917,9 +916,6 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             if os.path.exists('/proc/stb/info/boxtype'):
                 if getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p3 /media/mmc')
-
-            if getCPUSoC() == 'bcm7251s' or getBoxHostName == 'h7':   
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p3 /media/mmc')  
 
             if getCPUSoC() == '3798mv200' or getBoxHostName == 'sf8008':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p13 /media/mmc')  

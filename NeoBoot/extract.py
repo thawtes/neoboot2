@@ -121,6 +121,11 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                 os.system('mv /media/neoboot/ImagesUpload/' + getBoxHostName() + '/kernel.bin ' + media_target + '/boot/zImage.' + getBoxHostName() + '' + dev_null)
                 os.system('echo "Skopiowano kernel.bin STB-ARM Octagon."')   
 
+#arm Zgemma h7
+            elif getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
+                os.system('mv /media/neoboot/ImagesUpload/zgemma/' + getBoxHostName() + '/kernel.bin ' + media_target + '/boot/zImage.' + getBoxHostName() + '' + dev_null)
+                os.system('echo "Skopiowano kernel.bin STB-ARM Zgemma h7."')
+                
 
     if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
         cmd = 'cp /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
