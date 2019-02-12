@@ -60,7 +60,7 @@ if [ $TARGET = "Flash" ]; then
 
                 elif [ ! -e /.multinfo ]; then
                             if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then 
-                                if [ $VUMODEL = "duo4k" ; then                         
+                                if [ $VUMODEL = "duo4k" ] ; then                         
                                     if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
                                         echo "Reboot Flash. Instalacja kernel do /dev/mmcblk0p6..."                                    
                                         if [ -d /proc/stb ] ; then
