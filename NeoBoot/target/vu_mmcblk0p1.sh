@@ -1,5 +1,8 @@
 #!/bin/sh
 #script - gutosie 
+if `grep -q 'osd.language=pl_PL' </etc/enigma2/settings`; then
+  PL=1
+fi
 KERNEL=`uname -r` 
 IMAGE=/media/neoboot/ImageBoot
 IMAGENEXTBOOT=/media/neoboot/ImageBoot/.neonextboot
@@ -41,8 +44,9 @@ if [ $TARGET = "Flash" ]; then
                                     if [ -d /proc/stb ] ; then                        
                                                     dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin conv=noerror conv=sync of=/dev/mmcblk0p1
                                     fi
-                                    true                                     
-                                    echo "Przenoszenie pliku kernel do /tmp..."
+                                    true 
+                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                    
+                                    #echo "Przenoszenie pliku kernel do /tmp..."
                                     sleep 2
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk  
                                     echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p1..."                                  
@@ -63,8 +67,9 @@ if [ $TARGET = "Flash" ]; then
                                         if [ -d /proc/stb ] ; then
                                                     dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin conv=noerror conv=sync of=/dev/mmcblk0p1
                                         fi
-                                        true                                      
-                                        echo "Przenoszenie pliku kernel do /tmp..."
+                                        true
+                                        [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
+                                        #echo "Przenoszenie pliku kernel do /tmp..."
                                         sleep 2                                    
                                         cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk
                                         echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p1..."
@@ -73,10 +78,10 @@ if [ $TARGET = "Flash" ]; then
                                     fi
 
                                 fi                                
-                            fi                            
+                            fi                                                                       
                             update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                             echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                            echo " NEOBOOT - zainstalowano kernel-image - " $TARGET  "Za chwile nastapi restart systemu !!!" 
+                            [ $PL ] && " NEOBOOT - zainstalowano kernel-image - " $TARGET  "Za chwile nastapi restart systemu !!!"  || " NEOBOOT - installed kernel-image - " $TARGET  "The system will restart in a moment !!!" 
                 fi
                 sleep 5; reboot -d -f -h -i 
 else              	    
@@ -87,8 +92,9 @@ else
                                 INFOBOOT=$( cat /.multinfo )
                                 if [ $TARGET = $INFOBOOT ] ; then
                                     echo "NEOBOOT is booting image from " $TARGET
-                                else                                              
-                                    echo "Przenoszenie pliku kernel bin do /tmp"
+                                else
+                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                          
+                                    #echo "Przenoszenie pliku kernel bin do /tmp"
                                     sleep 2
                                     cp -f $IMAGE/$TARGET/boot/zImage.$VUMODEL /tmp/zImage
                                     echo "Instalacja kernel do /dev/mmcblk0p1..."
@@ -104,8 +110,9 @@ else
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                     echo "Typ procesora: " $CHIPSET " STB"                                                                          
                                 fi
-                        else              
-                                    echo "Przenoszenie pliku kernel bin do /tmp"
+                        else        
+                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."
+                                    #echo "Przenoszenie pliku kernel bin do /tmp"
                                     sleep 2
                                     cp -fR $IMAGE/$TARGET/boot/zImage.$VUMODEL /tmp/zImage
                                     echo "Instalacja kernel bin do /dev/mmcblk0p1..."

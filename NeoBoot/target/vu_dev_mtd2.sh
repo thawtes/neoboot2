@@ -107,7 +107,7 @@ else
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                                    echo "Typ procesora: " $CHIPSET " STB"t 
+                                    echo "Typ procesora: " $CHIPSET " STB" 
                                 fi
                         else
                                     echo "Przenoszenie pliku kernel do /tmp"
