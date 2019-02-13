@@ -85,7 +85,7 @@ if [ $TARGET = "Flash" ]; then
 else              	    
     if [ $TARGET != "Flash" ]; then 
         if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then
-            if [ $VUMODEL = "duo4k" ; then 
+            if [ $VUMODEL = "duo4k" ] ; then 
                         if [ -e /.multinfo ] ; then
                                 INFOBOOT=$( cat /.multinfo )
                                 if [ $TARGET = $INFOBOOT ] ; then
