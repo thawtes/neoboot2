@@ -86,8 +86,11 @@ class StartImage(Screen):
 #################################
     def KeyOk(self): 
         if getImageNeoBoot() != 'Flash': 
-            cmd = _("echo -e '[NeoBoot] Uwaga!!! po poprawnym starcie wybranego oprogramowania w neoboot,\nnalezy uruchomic NEOBOOTA by potwierdzic prawidlowy start image.\n\nNacisnij OK lub exit na pilocie by kontynuowac...\n\n\n'") 
-            self.session.openWithCallback(self.StartImageInNeoBoot, Console, _('NeoBoot: Start image...'), [cmd])
+            if not fileExists('/media/neoboot/ImageBoot/%s/.control_ok' % ( getImageNeoBoot())):
+                cmd = _("echo -e '[NeoBoot] Uwaga!!! po poprawnym starcie wybranego oprogramowania w neoboot,\nnalezy uruchomic NEOBOOTA by potwierdzic prawidlowy start image.\n\nNacisnij OK lub exit na pilocie by kontynuowac...\n\n\n'") 
+                self.session.openWithCallback(self.StartImageInNeoBoot, Console, _('NeoBoot: Start image...'), [cmd])
+            else:
+                self.StartImageInNeoBoot()
         else:
             self.StartImageInNeoBoot()
 
