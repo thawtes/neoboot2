@@ -1,6 +1,10 @@
 #!/bin/sh
 #script mod by gutosie
 #neo init arm 
+if `grep -q 'osd.language=pl_PL' </etc/enigma2/settings`; then
+  PL=1
+fi
+
 IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
 NEO=/media/neoboot
@@ -22,7 +26,7 @@ else
 		/bin/mount -t sysfs sysfs /sys > /dev/null 2>&1
 		/sbin/depmod -Ae > /dev/null 2>&1                
 	fi 	
-	sleep 2	
+	sleep 4	
 	mnttest="nouuid"
 	if [ -e $NEOBOOT/bin/install  ]; then
         	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
@@ -87,25 +91,45 @@ else
 		echo "NEOBOOT mount by UUID"
 	fi
 	if [ ! -e $IMAGEBOOT ]; then
+                  echo "reboot without a disk"
 		  ln -sfn /sbin/init.sysvinit /sbin/init
                   echo "Flash "  > $IMAGEBOOT
-                  echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                  echo "Reinstall kernel -Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
-	fi   
-
-        cat /etc/videomode > /proc/stb/video/videomode
-
+	fi 
+          
 	TARGET=Flash
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
-	fi	
+	fi
+######### test boot new imaga>>>>	
+	if [ -e $IMAGE/$TARGET/.control_ok ]; then
+	                        [ $PL ] && echo "Nie ma bledu, normalny start image..." || echo "No Error - Booting image normal..."
+          			#echo "No Error - Booting image normal... "
+          			sync
+	else 
+          			if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
+                    			echo "First start image - The first attempt to launch a new image... "; rm -f $IMAGE/$TARGET/.control_boot_new_image 
+                    			sync
+          			else 
+              			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
+              			        echo "Reinstall kernel -Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                    			ln -sfn /sbin/init.sysvinit /sbin/init
+                    			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
+                    			sync
+                    			echo "Error - NeoBoot he can not run it image !!! "
+                    			echo "Restart STB - Back to Flash... "
+                    			sleep 8; reboot -f   
+              			    fi
+          			fi
+	fi
+######### test boot new image<<<<<	
 	if [ $TARGET = "Flash" ]; then
 		echo "NEOBOOT is booting image from " $TARGET
 		/bin/umount $NEO > /dev/null 2>&1
 		/bin/umount /media/usb > /dev/null 2>&1
 		/bin/umount /media/hdd > /dev/null 2>&1
 	else
-                #echo 3 > /proc/sys/vm/drop_caches
 		if [ -d $NEO/ImageBoot/$TARGET ]; then			
 			if [ -f $NEO/ImageBoot/$TARGET/etc/init.d/udev ]; then
 				sed -ie s!"\$4"!"\$3"!g $NEO/ImageBoot/$TARGET/etc/init.d/udev
@@ -134,28 +158,6 @@ else
                            done	
                         chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh   
                         #/bin/mount /dev/sda1 /media/neoboot/ImageBoot/$TARGET/media/hdd                                
-
-######### test boot new imaga>>>>
-			if [ -e $IMAGE/$TARGET/.control_ok ]; then
-          			echo "No Error - Booting image normal ... ";  sleep 2
-          			sync
-			else 
-          			if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
-                    			echo "First start image - Proba uruchomienia nowego image... ";  sleep 5; rm -r -f $IMAGE/$TARGET/.control_boot_new_image 
-                    			sync
-          			else 
-              			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
-                    			ln -sfn /sbin/init.sysvinit /sbin/init
-                    			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
-                    			sync
-                    			echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
-                    			echo "Restart STB - Back to Flash... "
-                    			sleep 7; reboot -f   
-              			    fi
-          			fi
-			fi
-######### test boot new image<<<<<
-
 			if [ -f $IMAGE/$TARGET/sbin/init.sysvinit ]; then                                    
                                     exec /usr/sbin/chroot $IMAGE/$TARGET /sbin/init.sysvinit 
 			elif [ -f $IMAGE/$TARGET/sbin/init ]; then                                    
@@ -163,9 +165,9 @@ else
 			else
                                     echo " "
                                     echo "                       NEOBOOT - ERROR !!!                                 "
-                                    echo "Nie odnaleziono poprawnie rozpakowanego image "$TARGET" z partycji " $DEVICE
-                                    echo " Sprawdz poprawnosc rozpakowanych katalogow w wybranym image.              "
-                                    echo "                      Powrot do image Flash...                             "
+                                    echo "Not found correctly unpacked image "$TARGET" z partycji " $DEVICE
+                                    echo "Check the correctness of unpacked catalogs in the selected one image.      "
+                                    echo "                      Back to image Flash...                             "
                                     rm -f $IMAGEBOOT; touch $IMAGEBOOT; echo "Flash "  > $IMAGEBOOT 
                                     /usr/bin/showiframe $NEOBOOT/error.mvi > /dev/null 2>&1
                                     sync; sleep 10; exec /sbin/init.sysvinit $1
