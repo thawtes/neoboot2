@@ -44,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '2.00 '
-UPDATEVERSION = '2.02'
+UPDATEVERSION = '2.03'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -707,8 +707,6 @@ class NeoBootInstallation(Screen):
                     else:
                          self.messagebox = self.session.open(MessageBox, _('Canceled ... NeoBoot will not work properly !!! NeoBoot works only on VuPlus box, Ultimo4k, Solo4k, Uno4k !!!'), MessageBox.TYPE_INFO, 20)
 
-
-
                     os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh') 
                     cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh', 'w')
                     cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\ntouch /tmp/.init_reboot\n\nif [ -f /etc/init.d/neobootmount.sh ] ; then\n    sync; rm -f /etc/init.d/neobootmount.sh;  \nfi \n')
@@ -762,32 +760,33 @@ class NeoBootInstallation(Screen):
                     os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/*')                                                            
                     os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/*')
                     
-                    if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
-                        if fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
-                            self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
-                            self.myclose2(_('Error - nie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) )) 
+                    if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):                                    
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) )) 
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz ')) 
+                        else:
+                            self.myclose2(_('NeoBoot has been installed succesfully !' ))  
 
                     #Ultra
-                    if getCPUSoC() == 'bcm7424' or getBoxHostName == 'mbultra' or getTunerModel() == 'ini-8000sv': 
-                        if fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('Error - nie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-
-                    else:
+                    if getCPUSoC() == 'bcm7424' or getBoxHostName == 'mbultra' or getTunerModel() == 'ini-8000sv':                                    
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
+                        else:
                             self.myclose2(_('NeoBoot has been installed succesfully !' ))
 
                     #Edision OS MINI
-                    if getCPUSoC() == 'BCM7362' or getBoxHostName == 'osmini': 
-                        if fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('Error - nie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-
+                    if getCPUSoC() == 'BCM7362' or getBoxHostName == 'osmini':                                      
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
+                        else:
+                            self.myclose2(_('NeoBoot has been installed succesfully !' ))
                     else:
                             self.myclose2(_('NeoBoot has been installed succesfully !' ))
-
                 except:
                         pass
         else:
