@@ -144,6 +144,8 @@ class StartImage(Screen):
                             self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError 2 - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
+                        if not fileExists('/usr/sbin/nandwrite' ):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety ')
                         else:                            
 
                             if getImageNeoBoot() == 'Flash':                    
