@@ -131,6 +131,12 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         cmd = 'cp /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)             
 
+
+
+
+        if os.path.exists('/usr/sbin/nandwrite'):
+            cmd = 'cp -r /usr/sbin/nandwrite %s/ImageBoot/%s/usr/sbin/nandwrite > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd)
         if os.path.exists('/usr/bin/fullwget'):
             cmd = 'cp -r /usr/bin/fullwget %s/ImageBoot/%s/usr/bin/fullwget > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd)
