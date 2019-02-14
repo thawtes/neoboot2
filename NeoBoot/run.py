@@ -135,17 +135,15 @@ class StartImage(Screen):
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
                             self.close()
 
-
-
             #MiracleBox Ultra - MIPS  #Test 
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':                                                                                 
 
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
                             self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
+                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError 2 - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
-                        if not fileExists('/usr/sbin/nandwrite' ):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety ')
+                        elif not fileExists('/usr/sbin/nandwrite' ):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety '))
                         else:                            
 
                             if getImageNeoBoot() == 'Flash':                    
@@ -264,9 +262,9 @@ class StartImage(Screen):
             #VUPLUS ARM - vu_mmcblk0p1.sh                                                        
             elif getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse': 
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
-                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxVuModel()) ):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 2  - w lokalizacji  /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela vmlinux.gz '))
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) ))
+                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxVuModel()) ):
+                            self.myclose2(_('\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela flash-kernel-%s.bin ' % ( getBoxVuModel()) ))
                         else:
                             if getImageNeoBoot() == 'Flash':                                               
                                 if fileExists('/.multinfo'):                                                                
