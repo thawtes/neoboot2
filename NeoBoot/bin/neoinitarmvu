@@ -113,6 +113,7 @@ else
                     			sync
           			else 
               			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
+              			        echo " ***** gutosie _(*_*)_ TEST FIRST BOOT IMAGE - rebootbot ***** "
               			        echo "Reinstall kernel -Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                     			ln -sfn /sbin/init.sysvinit /sbin/init
                     			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
