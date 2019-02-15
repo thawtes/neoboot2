@@ -763,8 +763,9 @@ class NeoBootInstallation(Screen):
                     if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):                                    
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
                             self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) )) 
-                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
-                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz ')) 
+                        elif getCPUtype() == 'MIPS':
+                            if not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
+                                self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz ')) 
                         else:
                             self.myclose2(_('NeoBoot has been installed succesfully !' ))  
 
