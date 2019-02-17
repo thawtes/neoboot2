@@ -33,75 +33,104 @@ if [ -f $IMAGENEXTBOOT ]; then
 else
   TARGET=Flash              
 fi
-                   
-if [ $TARGET = "Flash" ]; then                    
-                if [ -e /.multinfo ]; then                    
-                        if [ $VUMODEL = "ultimo4k" ] || [ $VUMODEL = "solo4k" ] || [ $VUMODEL = "uno4k" ] || [ $VUMODEL = "uno4kse" ]; then                         
-                            if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then
+
+echo "NEOBOOT is booting image from " $TARGET
+
+if [ $VUMODEL = "ultimo4k" ] || [ $VUMODEL = "solo4k" ] || [ $VUMODEL = "uno4kse" ] || [ $VUMODEL = "uno4k" ]; then                    
+
+    if [ $TARGET = "Flash" ]; then   
+        if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then                     
+                if [ -e /.multinfo ]; then                                            
+                            if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then  
                                 cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
                                     echo "Boot - Flash. Instalacja kernel do /dev/mmcblk0p1..."                                                                                                           
-                                    if [ -d /proc/stb ] ; then                        
-                                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin conv=noerror conv=sync of=/dev/mmcblk0p1
+                                    if [ -d /proc/stb ] ; then
+                      	    	            dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p1
                                     fi
-                                    true 
-                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                    
-                                    #echo "Przenoszenie pliku kernel do /tmp..."
+
+                                    if [ ! -e "$D/lib/modules/`uname -r`" ]; then
+                                            mkdir -p $D/lib/modules/`uname -r`
+                                    fi
+                                    if [ -n "$D" ]; then
+                                            depmodwrapper -a -b $D `uname -r`
+                                    else
+                                        depmod -a `uname -r`
+                                    fi
+
+                                    rm -f /tmp/zImage
+                                    true
+                                    [ $PL ] && echo "Przenoszenie pliku kernel bin do /tmp" || echo "Moving the kernel file to /tmp"                                      
                                     sleep 2
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk  
                                     echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p1..."                                  
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk; continue                                    
-                                    cat /dev/mmcblk0p1 | grep "kernel"                                    
+                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
+                                    cat /dev/mmcblk0p1 | grep "kernel"                                   
                                 fi                                                   
                             fi                        
-                        fi
                         update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
-                        echo "NEOBOOT is booting image from " $TARGET
                         echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                          
 
                 elif [ ! -e /.multinfo ]; then
-                            if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then 
-                                if [ $VUMODEL = "duo4k" ; then                         
+                            if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then                                                         
                                     if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
                                         echo "Reboot - Flash. Instalacja kernel do /dev/mmcblk0p1..."                                                                           
                                         if [ -d /proc/stb ] ; then
                                                     dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin conv=noerror conv=sync of=/dev/mmcblk0p1
                                         fi
+                                        if [ ! -e "$D/lib/modules/`uname -r`" ]; then
+                                                mkdir -p $D/lib/modules/`uname -r`
+                                        fi
+                                        if [ -n "$D" ]; then
+                                                depmodwrapper -a -b $D `uname -r`
+                                        else
+                                            depmod -a `uname -r`
+                                        fi
+
+                                        rm -f /tmp/zImage
                                         true
                                         [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
-                                        #echo "Przenoszenie pliku kernel do /tmp..."
                                         sleep 2                                    
                                         cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk
                                         echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p1..."
                                         opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk                                
                                         cat /dev/mmcblk0p1 | grep "kernel"
                                     fi
-
-                                fi                                
+                               
                             fi                                                                       
                             update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                             echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                             [ $PL ] && " NEOBOOT - zainstalowano kernel-image - " $TARGET  "Za chwile nastapi restart systemu !!!"  || " NEOBOOT - installed kernel-image - " $TARGET  "The system will restart in a moment !!!" 
                 fi
                 sleep 5; reboot -d -f -h -i 
-else              	    
-    if [ $TARGET != "Flash" ]; then 
-        if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then
-            if [ $VUMODEL = "ultimo4k" ] || [ $VUMODEL = "solo4k" ] || [ $VUMODEL = "uno4k" ] || [ $VUMODEL = "uno4kse" ] ; then 
+        fi
+    else              	    
+        if [ $TARGET != "Flash" ]; then 
+            if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then
                         if [ -e /.multinfo ] ; then
                                 INFOBOOT=$( cat /.multinfo )
                                 if [ $TARGET = $INFOBOOT ] ; then
-                                    echo "NEOBOOT is booting image from " $TARGET
+                                    echo "NEOBOOT is booting image " $TARGET
                                 else
                                     [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                          
-                                    #echo "Przenoszenie pliku kernel bin do /tmp"
                                     sleep 2
                                     cp -f $IMAGE/$TARGET/boot/zImage.$VUMODEL /tmp/zImage
                                     echo "Instalacja kernel do /dev/mmcblk0p1..."
                                     sleep 2                                   
                                     if [ -d /proc/stb ] ; then
                                                     dd if=/tmp/zImage of=/dev/mmcblk0p1
+                                    fi                                    
+                                    if [ ! -e "$D/lib/modules/`uname -r`" ]; then
+                                                mkdir -p $D/lib/modules/`uname -r`
                                     fi
+                                    if [ -n "$D" ]; then
+                                                depmodwrapper -a -b $D `uname -r`
+                                    else
+                                            depmod -a `uname -r`
+                                    fi
+                                    rm -f /tmp/zImage
+                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
+                                    sleep 2                                      
                                     rm -f /tmp/zImage
                                     true 
                                     cat /dev/mmcblk0p1 | grep "kernel"1 
@@ -112,14 +141,24 @@ else
                                 fi
                         else        
                                     [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."
-                                    #echo "Przenoszenie pliku kernel bin do /tmp"
                                     sleep 2
                                     cp -fR $IMAGE/$TARGET/boot/zImage.$VUMODEL /tmp/zImage
                                     echo "Instalacja kernel bin do /dev/mmcblk0p1..."
                                     sleep 2 
                                     if [ -d /proc/stb ] ; then
-                                                    dd if=/tmp/zImage of=/dev/mmcblk0p1
+                                            dd if=/tmp/zImage of=/dev/mmcblk0p1
                                     fi
+                                    if [ ! -e "$D/lib/modules/`uname -r`" ]; then
+                                            mkdir -p $D/lib/modules/`uname -r`
+                                    fi
+                                    if [ -n "$D" ]; then
+                                            depmodwrapper -a -b $D `uname -r`
+                                    else
+                                            depmod -a `uname -r`
+                                    fi
+                                    rm -f /tmp/zImage
+                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
+                                    sleep 2                                      
                                     rm -f /tmp/zImage
                                     true                                    
                                     cat /dev/mmcblk0p1 | grep "kernel"
@@ -136,5 +175,9 @@ else
             fi
         fi
     fi                               
+else
+                    echo "$TARGET "  > /media/neoboot/ImageBoot/.neonextboot
+                    echo "Error - Nie wpierany model STB !!! "
+                    exit 0
 fi
 exit 0
