@@ -39,7 +39,7 @@ def getCPUtype() :
             cpu='ARMv7'
         elif lines.find('mips') != -1:
             cpu='MIPS'
-    return cpu
+    return cpu   
     
 def getKernelVersion():
     try:
@@ -110,12 +110,6 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
             elif getBoxHostName() == 'osmini' or getCPUSoC() == 'BCM7362':
                 os.system('mv /media/neoboot/ImagesUpload/osmini/kernel.bin ' + media_target + '/boot/' + getBoxHostName() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin Edision OS MINI. Typ stb - MIPS"')
-
-#arm vuplus
-            elif getCPUSoC() == '7444s' or getCPUSoC() == '7278' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
-                os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
-                os.system('echo "Skopiowano kernel.bin STB-ARM"')   
-
 #arm octagon
             elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008':
                 os.system('mv /media/neoboot/ImagesUpload/' + getBoxHostName() + '/kernel.bin ' + media_target + '/boot/zImage.' + getBoxHostName() + '' + dev_null)
@@ -124,15 +118,15 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
 #arm Zgemma h7
             elif getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
                 os.system('mv /media/neoboot/ImagesUpload/zgemma/' + getBoxHostName() + '/kernel.bin ' + media_target + '/boot/zImage.' + getBoxHostName() + '' + dev_null)
-                os.system('echo "Skopiowano kernel.bin STB-ARM Zgemma h7."')
-                
-
+                os.system('echo "Skopiowano kernel.bin STB-ARM Zgemma h7."')            
+#arm vuplus
+            elif getCPUSoC() == '7444s' or getCPUSoC() == '7278' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
+                os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
+                os.system('echo "Skopiowano kernel.bin STB-ARM"')   
+                                            
     if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
         cmd = 'cp /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)             
-
-
-
 
         if os.path.exists('/usr/sbin/nandwrite'):
             cmd = 'cp -r /usr/sbin/nandwrite %s/ImageBoot/%s/usr/sbin/nandwrite > /dev/null 2>&1' % (media, target)
@@ -480,6 +474,11 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
         os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null)
 #######################                                                                                                                                   
+    cmd = 'cp -r /var/lib/opkg/info/kernel-image-* %s/ImageBoot/%s/var/lib/opkg/info/ > /dev/null 2>&1' % (media, target)
+    rc = os.system(cmd)
+    #cmd = 'cp -r /var/lib/opkg/info/kernel- ' + getKernelVersionString() + '.* %s/ImageBoot/%s/var/lib/opkg/info/ > /dev/null 2>&1' % (media, target)
+    #rc = os.system(cmd)
+#######################    
     os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
     os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
     cmd = 'touch /tmp/.init_reboot'
@@ -978,8 +977,8 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/zgemma/h7'):
             os.system('echo "Instalacja systemu Zgemma H7."')
-            cmd = 'chmod 777 /media/neoboot/ImagesUpload/zgemma/h7/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/zgemma/h7/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
-            rc = os.system(cmd)
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/zgemma/h7/rootfs.tar.bz2; tar -jxf /media/neoboot/ImagesUpload/zgemma/h7/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            rc = os.system(cmd)                                                    
         elif os.path.exists('/media/neoboot/ImagesUpload/miraclebox/mini4k'):
             os.system('echo "Instalacja systemu Miraclebox mini4k."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/miraclebox/mini4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/miraclebox/mini4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'

@@ -43,8 +43,8 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '2.00 '
-UPDATEVERSION = '2.03'
+PLUGINVERSION = '2.01 '
+UPDATEVERSION = '2.04'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -898,6 +898,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
 
     def __init__(self, session):
         Screen.__init__(self, session)
+
         if fileExists('/tmp/.init_reboot'):
             system('rm /tmp/.init_reboot')
 
@@ -936,7 +937,6 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             if  getBoxVuModel() == 'duo4k':               
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p9 /media/mmc')
 
-
         self.list = []
         self.setTitle('         NeoBoot  %s  - Menu' % PLUGINVERSION + '          ' + 'Ver. update:  %s' % UPDATEVERSION)
         self['device_icon'] = Pixmap()
@@ -949,7 +949,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         self['key_blue'] = Label(_('Info'))
         self['key_menu'] = Label(_('More options'))
         self['key_1'] = Label(_('Update NeoBot'))
-        self['key_2'] = Label(_('Start Flash Image'))
+        self['key_2'] = Label(_('Reinstall NeoBoot'))
         self['key_3'] = Label(_('Install Kernel'))
         self['label1'] = Label(_('Please choose an image to boot'))
         self['label2'] = Label(_('NeoBoot is running from:'))
@@ -980,13 +980,17 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
          'ok': self.boot,
          'menu': self.mytools,
          '1': self.neoboot_update,
-         '2': self.ImageFlash,
+         '2': self.ReinstallNeoBoot,
          '3': self.ReinstallKernel,
          'back': self.close_exit})
         if not fileExists('/etc/name'):
             os.system('touch /etc/name')
         self.onShow.append(self.updateList)
 
+    def chackkernel(self):
+                            message = _('NeoBoot wykryl niezgodnos kernela w flash, \nZainstalowac kernel dla flash image ? ?')
+                            ybox = self.session.openWithCallback(self.updatekernel, MessageBox, message, MessageBox.TYPE_YESNO)
+                            ybox.setTitle(_('Updating ... '))
 
     def pomoc(self):
         if fileExists('/.multinfo'):
@@ -995,16 +999,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         else:
             self.session.open(Opis)
 
-    def ImageFlash(self):
+    def ReinstallNeoBoot(self):
         if not fileExists('/.multinfo'):
             self.session.open(MessageBox, _('Sorry, Opcja dostepna tylko z poziomu image uruchomionego w neoboocie.'), MessageBox.TYPE_INFO, 7)
             self.close()
-        else:
-            cmd = _("echo -e 'Restart in progress...\n'")
-            cmd1='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/*.ipk' 
-            cmd2 = 'mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ;sleep 2; reboot -f' 
-            self.session.openWithCallback(self.up, Console, _('NeoBoot: Deleting Image'), [cmd, cmd1, cmd2])
-
             
     def deviceneoboot(self):
         self.session.open(Montowanie)
@@ -1022,6 +1020,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
                 out = open('/media/neoboot/ImageBoot/.neonextboot', 'w')
                 out.write(imagefile)
                 out.close()
+
         else:
             system('touch /tmp/.init_reboot')
             out = open('/media/neoboot/ImageBoot/.neonextboot', 'w')
@@ -1409,6 +1408,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         self.close()
                 
 ####################### _(-_-)_ gutosie _(-_-)_ #######################
+
 ####################### _(-_-)_ gutosie _(-_-)_ #######################
                                                
 def readline(filename, iferror = ''):
