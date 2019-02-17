@@ -5,12 +5,16 @@ if `grep -q 'osd.language=pl_PL' </etc/enigma2/settings`; then
   PL=1
 fi
 
+if [ -f /proc/stb/info/vumodel ];  then  
+    VUMODEL=$( cat /proc/stb/info/vumodel )     
+fi
+BOXNAME=$( cat /etc/hostname) 
 IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
 NEO=/media/neoboot
 NEOBOOT=/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot
 MODPROBE=/sbin/modprobe
-BOXNAME=`cat /etc/hostname`
+#BOXNAME=`cat /etc/hostname`
 FINDBOOT=/media/*/ImageBoot/.neonextboot
 CELBOOT=`cat $FINDBOOT`
 
@@ -105,15 +109,34 @@ else
 ######### test boot new imaga>>>>	
 	if [ -e $IMAGE/$TARGET/.control_ok ]; then
 	                        [ $PL ] && echo "Nie ma bledu, normalny start image..." || echo "No Error - Booting image normal..."
+          			#echo "No Error - Booting image normal... "
+          			sync
 	else 
           			if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
                     			echo "First start image - The first attempt to launch a new image... "; rm -f $IMAGE/$TARGET/.control_boot_new_image 
+                    			sync
           			else 
-              			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
-              			        echo " ***** gutosie _(*_*)_ TEST FIRST BOOT IMAGE - rebootbot ***** "
-              			        echo "Reinstall kernel -Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+              			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then                                          
+                                        if [ $BOXNAME = "vuultimo4k" ] || [ $BOXNAME = "solo4k" ] || [ $BOXNAME = "uno4kse" ] || [ $BOXNAME = "uno4k" ]; then                                                         			        
+              			            if [ -d /proc/stb ] ; then
+              			                    echo " Install kernel image flash.... " $BOXNAME
+   	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p1
+                                            fi
+                                        elif [ $BOXNAME = "vuzero4k" ] ; then                                                         			        
+              			            if [ -d /proc/stb ] ; then
+              			                    echo " Install kernel image flash.... " $BOXNAME
+   	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p4
+                                            fi
+                                        elif [ $BOXNAME = "vuduo4k" ] ; then                                                         			        
+              			            if [ -d /proc/stb ] ; then
+              			                    echo " Install kernel image flash.... " $BOXNAME
+   	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p6
+                                            fi                                            
+                                        fi    
+              			        echo "Wrong kernel. Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                     			ln -sfn /sbin/init.sysvinit /sbin/init
                     			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
+                    			sync
                     			echo "Error - NeoBoot he can not run it image !!! "
                     			echo "Restart STB - Back to Flash... "
                     			sleep 8; reboot -f   
@@ -167,7 +190,7 @@ else
                                     echo "                      Back to image Flash...                             "
                                     rm -f $IMAGEBOOT; touch $IMAGEBOOT; echo "Flash "  > $IMAGEBOOT 
                                     /usr/bin/showiframe $NEOBOOT/error.mvi > /dev/null 2>&1
-                                    sleep 10; exec /sbin/init.sysvinit $1
+                                    sync; sleep 10; exec /sbin/init.sysvinit $1
 			fi
 			exit 0
 		fi

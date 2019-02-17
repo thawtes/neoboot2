@@ -6,10 +6,16 @@ if [ ! -e /media/neoboot/ImageBoot/.neonextboot ]; then
           echo "Error - Back to Flash... "
           sleep 5; reboot -f
 fi 
- 
+
+if [ -f /proc/stb/info/vumodel ];  then  
+    VUMODEL=$( cat /proc/stb/info/vumodel )     
+fi
+
+BOXNAME=$( cat /etc/hostname) 
 IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
 TARGET=Flash
+
 if [ -f $IMAGEBOOT ]; then
     TARGET=`cat $IMAGEBOOT`
 fi
@@ -23,7 +29,25 @@ else
           else 
               if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
                     echo " ***** gutosie _(*_*)_ TEST FIRST BOOT IMAGE - rebootbot ***** "
-                    echo "Reinstall kernel -Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                    if [ $BOXNAME = "vuultimo4k" ] || [ $BOXNAME = "vusolo4k" ] || [ $BOXNAME = "vuuno4kse" ] || [ $BOXNAME = "vuuno4k" ]; then                                                         			        
+              			            if [ -d /proc/stb ] ; then
+              			                    echo " Install kernel image flash.... " $BOXNAME
+   	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p1
+                                            fi
+                    elif [ $BOXNAME = "vuzero4k" ] ; then                                                         			        
+              			            if [ -d /proc/stb ] ; then
+              			                    echo " Install kernel image flash.... " $BOXNAME
+   	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p4
+                                            fi
+                    elif [ $BOXNAME = "vuduo4k" ] ; then                                                         			        
+              			            if [ -d /proc/stb ] ; then
+              			                    echo " Install kernel image flash.... " $BOXNAME
+   	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p6
+                                            fi                                            
+                                        fi 
+                    fi                     
+                                        
+                    echo "Wrong kernel. Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                     ln -sfn /sbin/init.sysvinit /sbin/init
                     echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
                     echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
