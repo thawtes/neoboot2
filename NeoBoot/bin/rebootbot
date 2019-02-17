@@ -3,7 +3,6 @@
 if [ ! -e /media/neoboot/ImageBoot/.neonextboot ]; then
           ln -sfn /sbin/init.sysvinit /sbin/init
           echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
-          sync
           echo "Error - Back to Flash... "
           sleep 5; reboot -f
 fi 
@@ -18,18 +17,15 @@ $IMAGE/$TARGET
 	
 if [ -e $IMAGE/$TARGET/.control_ok ]; then
           echo "No Error - Booting image normal ... ";  sleep 2
-          sync
 else 
           if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
                     echo "First start image - Proba uruchomienia nowego image... ";  sleep 5; rm -r -f $IMAGE/$TARGET/.control_boot_new_image 
-                    sync
           else 
               if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
                     echo " ***** gutosie _(*_*)_ TEST FIRST BOOT IMAGE - rebootbot ***** "
                     echo "Reinstall kernel -Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                     ln -sfn /sbin/init.sysvinit /sbin/init
                     echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
-                    sync
                     echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
                     echo "Restart STB - Back to Flash... "
                     sleep 7; reboot -f   

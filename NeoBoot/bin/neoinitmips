@@ -210,7 +210,7 @@ else
                 echo "Halt init image - " $TARGETIMAGE 
                 echo "Start image Flash...  "  
                 $NEOBOOT/bh.mvi > /dev/null 2>&1
-                sync; sleep 1
+                sleep 1
                 exec /sbin/init.sysvinit $* 
                 exit 0
             else
@@ -225,19 +225,16 @@ else
 ######### test boot new imaga>>>>	
 	if [ -e $IMAGE/$TARGET/.control_ok ]; then
 	                        [ $PL ] && echo "Nie ma bledu, normalny start image..." || echo "No Error - Booting image normal..."
-          			#echo "No Error - Booting image normal... "
-          			sync
+
 	else 
           			if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
                     			echo "First start image - The first attempt to launch a new image... "; rm -f $IMAGE/$TARGET/.control_boot_new_image 
-                    			sync
           			else 
               			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
               			        echo " ***** gutosie _(*_*)_ TEST FIRST BOOT IMAGE - rebootbot ***** "
               			        echo "Reinstall kernel -Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                     			ln -sfn /sbin/init.sysvinit /sbin/init
                     			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
-                    			sync
                     			echo "Error - NeoBoot he can not run it image !!! "
                     			echo "Restart STB - Back to Flash... "
                     			sleep 8; reboot -f   
@@ -330,7 +327,7 @@ else
                                     echo "                      Powrot do image Flash...                             "
                                     rm -f $IMAGEBOOT; touch $IMAGEBOOT; echo "Flash "  >> $IMAGEBOOT 
                                     /usr/bin/showiframe $NEOBOOT/error.mvi > /dev/null 2>&1
-                                    sync; sleep 10; exec /sbin/init.sysvinit $*
+                                    sleep 10; exec /sbin/init.sysvinit $*
 
                                 fi
 			        exit 0
