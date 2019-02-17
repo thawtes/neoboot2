@@ -1476,7 +1476,7 @@ def main(session, **kwargs):
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
-        return [(_('NEOBOOT'),
+        return [(_('NeoBoot MultiBoot'),
           main,
           'neo_boot',
           1)]
