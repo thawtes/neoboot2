@@ -94,6 +94,20 @@ else
 	elif [ $mnttest="uuid" ]; then	
 		echo "NEOBOOT mount by UUID"
 	fi
+#################################################	
+	if [ -e $NEOBOOT/bin/neobmarm ]; then
+            echo "  Neo-Boot start  boot manager  "
+            echo "  Waiting to change image - 20s "
+            echo " "
+	    chmod 0755 $NEOBOOT/bin/neobmarm
+	    $NEOBOOT/neologo.mvi > /dev/null 2>&1
+	    sleep 1
+	    $NEOBOOT/bin/neobmarm > /dev/null 2>&1
+	fi
+	if [ -e $NEOBOOT/bin/fbclear ]; then
+	        $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear > /dev/null 2>&1
+        fi
+################################################        
 	if [ ! -e $IMAGEBOOT ]; then
                   echo "reboot without a disk"
 		  ln -sfn /sbin/init.sysvinit /sbin/init
@@ -106,6 +120,22 @@ else
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
 	fi
+	
+###################################################
+
+	if [ -e $NEOBOOT/bin/neobmarm ]; then
+            echo "  Neo-Boot start  boot manager  "
+            echo "  Waiting to change image - 20s "
+            echo " "
+	    chmod 0755 $NEOBOOT/bin/neobmarm
+	    $NEOBOOT/neologo.mvi > /dev/null 2>&1
+	    sleep 1
+	    $NEOBOOT/bin/neobmarm > /dev/null 2>&1
+	fi
+	if [ -e $NEOBOOT/bin/fbclear ]; then
+	        $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear > /dev/null 2>&1
+        fi
+        
 ######### test boot new imaga>>>>	
 	if [ -e $IMAGE/$TARGET/.control_ok ]; then
 	                        [ $PL ] && echo "Nie ma bledu, normalny start image..." || echo "No Error - Booting image normal..."
