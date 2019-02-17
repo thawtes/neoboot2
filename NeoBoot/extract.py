@@ -476,8 +476,13 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
 #######################                                                                                                                                   
     cmd = 'cp -r /var/lib/opkg/info/kernel-image-* %s/ImageBoot/%s/var/lib/opkg/info/ > /dev/null 2>&1' % (media, target)
     rc = os.system(cmd)
-    #cmd = 'cp -r /var/lib/opkg/info/kernel- ' + getKernelVersionString() + '.* %s/ImageBoot/%s/var/lib/opkg/info/ > /dev/null 2>&1' % (media, target)
-    #rc = os.system(cmd)
+    cmd = 'rm -r %s/ImageBoot/%s/etc/passwd  > /dev/null 2>&1' % (media, target)
+    rc = os.system(cmd)   
+    cmd = 'mv %s/ImageBoot/%s/etc/passwd- %s/ImageBoot/%s/etc/passwd' % (media,
+     target,
+     media,
+     target)
+    rc = os.system(cmd)                
 #######################    
     os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
     os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)

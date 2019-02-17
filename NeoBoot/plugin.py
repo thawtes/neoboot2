@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-  
                                
 from __init__ import _
-from Plugins.Extensions.NeoBoot.files import Harddisk                                                                                                                                                     
+from Plugins.Extensions.NeoBoot.files import Harddisk 
+from Components.About import about                                                                                                                                                    
 from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
 from enigma import getDesktop
 from enigma import eTimer
@@ -44,7 +45,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '2.01 '
-UPDATEVERSION = '2.04'
+UPDATEVERSION = '2.05'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -504,7 +505,7 @@ class NeoBootInstallation(Screen):
 
     def install2(self, yesno):
         if yesno:
-            system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoini*; chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cd;')                        
+            system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoini*; chmod 0755 ./ex_init.py; chmod 0755 ./target/*.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cp -rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoini* /sbin cd;')                                    
             cmd = 'mkdir /media/neoboot;mount ' + self.mysel + ' /media/neoboot'
             system(cmd)
             cmd2 = 'mkdir ' + self.mysel + 'ImageBoot;mkdir ' + self.mysel + 'ImagesUpload' 
@@ -523,11 +524,11 @@ class NeoBootInstallation(Screen):
                 mntid = os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
                 os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
 
-                fstabuuid = os.popen('blkid -s UUID -o value ' + mntdev).read()
-                fstabuuidwrite = 'UUID=' + fstabuuid.strip() + '        /media/neoboot        auto        defaults\t       1        1'
-                fileHandle = open('/etc/fstab', 'a')
-                fileHandle.write(fstabuuidwrite)
-                fileHandle.close()
+                #fstabuuid = os.popen('blkid -s UUID -o value ' + mntdev).read()
+                #fstabuuidwrite = 'UUID=' + fstabuuid.strip() + '        /media/neoboot        auto        defaults\t       1        1'
+                #fileHandle = open('/etc/fstab', 'a')
+                #fileHandle.write(fstabuuidwrite)
+                #fileHandle.close()
                 os.system('blkid -c /dev/null /dev/sd* > /tmp/blkidlist')
                 os.system('blkid -c /dev/null ' + mntdev + ' > /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
                 system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
@@ -549,6 +550,19 @@ class NeoBootInstallation(Screen):
             out2.write('Flash ')
             out2.close()
             
+            #string = getImageNeoBoot()
+            #year = string[0:4]
+            #month = string[4:6]
+            #day = string[6:8]
+            #driversdate = '-'.join((year, month, day))
+            out = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.neo_info', 'w')
+            out.write('Kernel\n')
+            out.write('Kernel-Version: ' + about.getKernelVersionString() + '\n')
+            out.write('Image\n')
+            out.write('Image-Boot: ' + getImageNeoBoot() + '\n')
+            out.close()
+
+
             if fileExists('/etc/issue.net'):
                 try:
                     lines = open('/etc/hostname', 'r').readlines()
@@ -928,10 +942,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
                 if getTunerModel() == 'dm900' or getCPUSoC() == 'BCM97252SSFF':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p2 /media/mmc')
                     
-            if  getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'uno4kse' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k':
+            if  getBoxVuModel() == 'uno4kse' or getBoxVuModel() == 'uno4k'  or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k':
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')
 
-            if  getBoxVuModel() == 'vu_mmcblk0p4':
+            if  getBoxVuModel() == 'zero4k':
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p7 /media/mmc')
 
             if  getBoxVuModel() == 'duo4k':               
