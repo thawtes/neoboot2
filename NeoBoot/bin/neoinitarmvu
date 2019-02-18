@@ -8,6 +8,7 @@ fi
 if [ -f /proc/stb/info/vumodel ];  then  
     VUMODEL=$( cat /proc/stb/info/vumodel )     
 fi
+
 BOXNAME=$( cat /etc/hostname) 
 IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
@@ -94,6 +95,7 @@ else
 	elif [ $mnttest="uuid" ]; then	
 		echo "NEOBOOT mount by UUID"
 	fi
+	
 #################################################	
 	if [ -e $NEOBOOT/bin/neobmarm ]; then
             echo "  Neo-Boot start  boot manager  "
@@ -107,7 +109,8 @@ else
 	if [ -e $NEOBOOT/bin/fbclear ]; then
 	        $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear > /dev/null 2>&1
         fi
-################################################        
+################################################   
+     
 	if [ ! -e $IMAGEBOOT ]; then
                   echo "reboot without a disk"
 		  ln -sfn /sbin/init.sysvinit /sbin/init
@@ -120,21 +123,6 @@ else
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
 	fi
-	
-###################################################
-
-	if [ -e $NEOBOOT/bin/neobmarm ]; then
-            echo "  Neo-Boot start  boot manager  "
-            echo "  Waiting to change image - 20s "
-            echo " "
-	    chmod 0755 $NEOBOOT/bin/neobmarm
-	    $NEOBOOT/neologo.mvi > /dev/null 2>&1
-	    sleep 1
-	    $NEOBOOT/bin/neobmarm > /dev/null 2>&1
-	fi
-	if [ -e $NEOBOOT/bin/fbclear ]; then
-	        $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear > /dev/null 2>&1
-        fi
         
 ######### test boot new imaga>>>>	
 	if [ -e $IMAGE/$TARGET/.control_ok ]; then
@@ -147,7 +135,7 @@ else
                     			sync
           			else 
               			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then                                          
-                                        if [ $BOXNAME = "vuultimo4k" ] || [ $BOXNAME = "solo4k" ] || [ $BOXNAME = "uno4kse" ] || [ $BOXNAME = "uno4k" ]; then                                                         			        
+                                        if [ $BOXNAME = "vuultimo4k" ] || [ $BOXNAME = "vusolo4k" ] || [ $BOXNAME = "vuuno4kse" ] || [ $BOXNAME = "vuuno4k" ]; then                                                         			        
               			            if [ -d /proc/stb ] ; then
               			                    echo " Install kernel image flash.... " $BOXNAME
    	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p1
@@ -169,7 +157,7 @@ else
                     			sync
                     			echo "Error - NeoBoot he can not run it image !!! "
                     			echo "Restart STB - Back to Flash... "
-                    			sleep 8; reboot -f   
+                    			sleep 5; reboot -f   
               			    fi
           			fi
 	fi
