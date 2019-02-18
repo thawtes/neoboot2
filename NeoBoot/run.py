@@ -137,7 +137,7 @@ class StartImage(Screen):
                 restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.'), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Full restart GUI now ?'))
 
-            elif getCPUtype() == 'ARMv7' and getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k' or getCPUSoC() == '72604' or getBoxHostName() == 'vuzero4k' or getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':                                
+            elif getCPUtype() == 'ARMv7' and getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7'or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == '72604' or getBoxHostName() == 'vuzero4k' or getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse':
                 restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.'), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Full restart GUI now ?'))
 
@@ -177,7 +177,7 @@ class StartImage(Screen):
 #################_____ARM____##########################                                                                                              
     def bootimageARM(self):
             #Zgemma h7S ARM  ARM - h7s_mmcblk0p2.sh 
-            if getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
+            if getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':  
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
                         elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxHostName()) ):
@@ -252,7 +252,7 @@ class StartImage(Screen):
                             self.close()  
                             
             #VUPLUS ARM - vu_mmcblk0p1.sh                                                                                    
-            elif getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
+            elif getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse': 
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) ))
                         elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxVuModel()) ):
@@ -267,7 +267,6 @@ class StartImage(Screen):
                                 elif not fileExists('/.multinfo'): 
                                     cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...')                                  
                                     cmd1 = 'sleep 5; ln -sf "init.sysvinit" "/sbin/init"; reboot -dfhi'                                                   
-
 
                             elif  getImageNeoBoot() != 'Flash':                                                 
                                 if not fileExists('/.multinfo'):  
@@ -329,7 +328,7 @@ class StartImage(Screen):
                             self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd])
                             self.close()  
 
-            #VUPLUS ARM - Duo4k vu_mmcblk0p6.sh                                                        
+            #VUPLUS ARM - Duo4k vu_mmcblk0p6.sh                                                                  
             elif getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k' :
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) ))
