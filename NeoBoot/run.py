@@ -135,89 +135,13 @@ class StartImage(Screen):
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
                             self.close()
 
-            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini'  or getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':                                
+            elif getCPUtype() == 'MIPS' and getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini'  or getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':                                
                 restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.'), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Full restart GUI now ?'))
 
-
-
-##############################################################
-#Zgemma h7S ARM  ARM - h7s_mmcblk0p2.sh                                                                                    
-            elif getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
-                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxHostName()) ):
-                            self.myclose2(_('\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela flash-kernel-%s.bin ' % ( getBoxHostName()) ))
-                        else:
-                            if getImageNeoBoot() == 'Flash':                                                
-                                if fileExists('/.multinfo'):
-                                    os.system('cd /media/mmc; ln -sf "init.sysvinit" "/media/mmc/sbin/init"')
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/h7s_mmcblk0p2.sh '                  
-
-                                elif not fileExists('/.multinfo'):   
-                                    cmd = 'ln -sf "init.sysvinit" "/sbin/init"; /etc/init.d/reboot'  
-                                    #cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; reboot -f' %  getBoxHostName()                                                     
-
-                            elif  getImageNeoBoot() != 'Flash':                                                 
-                                if not fileExists('/.multinfo'):  
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):   
-                                        cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
-                                    
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):     
-                                        os.system('ln -sfn /sbin/neoinitarm /sbin/init')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/h7s_mmcblk0p2.sh '                    
-
-                                elif fileExists('/.multinfo'):    
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        cmd = 'python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py'
-                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/kernel; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxHostName() 
-                                        cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; reboot -f' %  getBoxHostName() 
-
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        os.system('cd /media/mmc; ln -sf "neoinitarm" "/media/mmc/sbin/init"')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/h7s_mmcblk0p2.sh '                                                                                       
-
-                            self.session.open(Console, _('NeoBoot ARM....'), [cmd])
-                            self.close()  
-                                                        
-##############################################################
-#Octagon SF4008 ARM  ARM - sf4008_mmcblk0p3.sh                                                                                   
-            elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' :
-                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxHostName()) ):
-                            self.myclose2(_('\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela flash-kernel-%s.bin ' % ( getBoxHostName()) ))
-                        else:
-                            if getImageNeoBoot() == 'Flash':                                                
-                                if fileExists('/.multinfo'):
-                                    os.system('cd /media/mmc; ln -sf "init.sysvinit" "/media/mmc/sbin/init"')
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/sf4008_mmcblk0p3.sh '                  
-
-                                elif not fileExists('/.multinfo'):   
-                                    cmd = 'ln -sf "init.sysvinit" "/sbin/init"; /etc/init.d/reboot'  
-                                    #cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; reboot -f' %  getBoxHostName()                                                     
-
-                            elif  getImageNeoBoot() != 'Flash':                                                 
-                                if not fileExists('/.multinfo'):  
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):   
-                                        cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
-                                    
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):     
-                                        os.system('ln -sfn /sbin/neoinitarm /sbin/init')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/sf4008_mmcblk0p3.sh '                    
-
-                                elif fileExists('/.multinfo'):    
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/kernel; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxHostName() 
-                                        cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; reboot -f' %  getBoxHostName() 
-
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        os.system('cd /media/mmc; ln -sf "neoinitarm" "/media/mmc/sbin/init"')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/sf4008_mmcblk0p3.sh '                                                                                       
-
-                            self.session.open(Console, _('NeoBoot ARM....'), [cmd])
-                            self.close()  
-                            
+            elif getCPUtype() == 'ARMv7' and getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':                                
+                restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.'), MessageBox.TYPE_YESNO)
+                restartbox.setTitle(_('Full restart GUI now ?'))
 
 #######################################################
 #VUPLUS ARM - Zero4k vu_mmcblk0p4.sh                                                       
@@ -416,7 +340,6 @@ class StartImage(Screen):
             self.bootimage()
         else:
             self.selectboot2()
-            #self.session.open(MessageBox, _('Canceled update.'), MessageBox.TYPE_INFO, 7)
 
 
     def selectboot2(self):
@@ -435,12 +358,102 @@ class StartImage(Screen):
                         self.close() 
 
 #############################################################
-#MiracleBox Ultra - MIPS  mbultra_dev_mtd2.sh  
-    #def bootimage1(self):
-                            #os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
-                            #self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
-                            #self.close()
+
     def bootimage(self):
+        if getCPUtype() == 'ARMv7': #and        
+            self.bootimageARM()
+        elif getCPUtype() == 'MIPS': #and        
+            self.bootimageARM()
+        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()         
+            
+    def bootimageARM(self):
+##############################################################
+#Zgemma h7S ARM  ARM - h7s_mmcblk0p2.sh                                                                                    
+            if getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
+                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxHostName()) ):
+                            self.myclose2(_('\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela flash-kernel-%s.bin ' % ( getBoxHostName()) ))
+                        else:
+                            if getImageNeoBoot() == 'Flash':                                                
+                                if fileExists('/.multinfo'):
+                                    os.system('cd /media/mmc; ln -sf "init.sysvinit" "/media/mmc/sbin/init"')
+                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/h7s_mmcblk0p2.sh '                  
+
+                                elif not fileExists('/.multinfo'):   
+                                    cmd = 'ln -sf "init.sysvinit" "/sbin/init"; /etc/init.d/reboot'  
+                                    #cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; reboot -f' %  getBoxHostName()                                                     
+
+                            elif  getImageNeoBoot() != 'Flash':                                                 
+                                if not fileExists('/.multinfo'):  
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):   
+                                        cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
+                                    
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):     
+                                        os.system('ln -sfn /sbin/neoinitarm /sbin/init')
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/h7s_mmcblk0p2.sh '                    
+
+                                elif fileExists('/.multinfo'):    
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        cmd = 'python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py'
+                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/kernel; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxHostName() 
+                                        cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; reboot -f' %  getBoxHostName() 
+
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        os.system('cd /media/mmc; ln -sf "neoinitarm" "/media/mmc/sbin/init"')
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/h7s_mmcblk0p2.sh '                                                                                       
+
+                            self.session.open(Console, _('NeoBoot ARM....'), [cmd])
+                            self.close()  
+                                                        
+##############################################################
+#Octagon SF4008 ARM  ARM - sf4008_mmcblk0p3.sh                                                                                   
+            elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' :   
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
+                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxHostName()) ):
+                            self.myclose2(_('\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela flash-kernel-%s.bin ' % ( getBoxHostName()) ))
+                        else:
+                            if getImageNeoBoot() == 'Flash':                                                
+                                if fileExists('/.multinfo'):
+                                    os.system('cd /media/mmc; ln -sf "init.sysvinit" "/media/mmc/sbin/init"')
+                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/sf4008_mmcblk0p3.sh '                  
+
+                                elif not fileExists('/.multinfo'):   
+                                    cmd = 'ln -sf "init.sysvinit" "/sbin/init"; /etc/init.d/reboot'  
+                                    #cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; reboot -f' %  getBoxHostName()                                                     
+
+                            elif  getImageNeoBoot() != 'Flash':                                                 
+                                if not fileExists('/.multinfo'):  
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):   
+                                        cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
+                                    
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):     
+                                        os.system('ln -sfn /sbin/neoinitarm /sbin/init')
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/sf4008_mmcblk0p3.sh '                    
+
+                                elif fileExists('/.multinfo'):    
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/kernel; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxHostName() 
+                                        cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; reboot -f' %  getBoxHostName() 
+
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        os.system('cd /media/mmc; ln -sf "neoinitarm" "/media/mmc/sbin/init"')
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/sf4008_mmcblk0p3.sh '                                                                                       
+
+                            self.session.open(Console, _('NeoBoot ARM....'), [cmd])
+                            self.close()  
+                            
+            else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+
+    def bootimageMIPS(self):
             if getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
                             self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))

@@ -44,8 +44,8 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '2.01 '
-UPDATEVERSION = '2.05'
+PLUGINVERSION = '2.02 '
+UPDATEVERSION = '2.06'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -767,7 +767,7 @@ class NeoBootInstallation(Screen):
                     os.system('opkg configure update-modules')
                     
                     if getCPUtype() == 'ARMv7':       
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')   
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump_mips; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')   
                     elif getCPUtype() == 'MIPS':       
                         os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/rebootbot')
 
@@ -1490,7 +1490,7 @@ def main(session, **kwargs):
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
-        return [(_('NeoBoot MultiBoot'),
+        return [(_('NeoBoot'),
           main,
           'neo_boot',
           1)]
