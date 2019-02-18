@@ -121,10 +121,10 @@ class StartImage(Screen):
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
-                            self.close()
+                            self.close()                                                                                                                                                                                                       
 
             #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS                                                                                                                                                                       # test -  ultra, osmini 
-            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'h3'  or getTunerModel() == 'ini-1000sv':  #or getBoxHostName == 'mbultra'  or getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini'                                 
+            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'h3'  or getTunerModel() == 'ini-1000sv':  #or getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv' or getBoxHostName() == 'osmini'                                 
                         if getImageNeoBoot() == 'Flash':                                        
                             self.session.open(TryQuitMainloop, 2)
                         elif getImageNeoBoot() != 'Flash':                     
@@ -134,6 +134,12 @@ class StartImage(Screen):
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
                             self.close()
+
+            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini'  or getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':                                
+                restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.'), MessageBox.TYPE_YESNO)
+                restartbox.setTitle(_('Full restart GUI now ?'))
+
+
 
 ##############################################################
 #Zgemma h7S ARM  ARM - h7s_mmcblk0p2.sh                                                                                    
@@ -331,76 +337,6 @@ class StartImage(Screen):
                             self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd, cmd1])
                             self.close()  
 
-#############################################################
-#MiracleBox Ultra - MIPS  mbultra_dev_mtd2.sh  
-            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':
-                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 2 - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
-                        elif not fileExists('/usr/sbin/nandwrite' ):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety '))
-                        else: 
-                            if getImageNeoBoot() == 'Flash':                    
-                                if fileExists('/.multinfo'):  
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/mbultra_dev_mtd2.sh'                  
-                                elif not fileExists('/.multinfo'):   
-                                    cmd = 'ln -sfn /sbin/init.sysvinit /sbin/init; reboot -d -f -h -i'
-
-                            elif getImageNeoBoot() != 'Flash':                      
-                                if not fileExists('/.multinfo'):                        
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
-                                        cmd = 'reboot -d -f -h -i'                                                                 
-
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/mbultra_dev_mtd2.sh'                  
-
-                                elif fileExists('/.multinfo'):   
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        cmd = 'flash_eraseall /dev/mtd2; sleep 2; nandwrite -p /dev/mtd2 /media/neoboot/ImagesUpload/.kernel/%s.vmlinux.gz; cp -Rf /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; reboot -f' % (getBoxHostName(),  getBoxHostName())
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/mbultra_dev_mtd2.sh'
-
-                            self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
-                            self.close()
-
-###################################################
-#Edision OS MINI  - MIPS osmini_dev_mtd0.sh   
-            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini':                                      
-                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 2 - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
-                        elif not fileExists('/usr/sbin/nandwrite' ):
-                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety '))
-                        else: 
-                            if getImageNeoBoot() == 'Flash':                    
-                                if fileExists('/.multinfo'):  
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/osmini_dev_mtd0.sh'                  
-                                elif not fileExists('/.multinfo'):   
-                                    cmd = 'ln -sfn /sbin/init.sysvinit /sbin/init; reboot -d -f -h -i'
-
-                            elif getImageNeoBoot() != 'Flash':                      
-                                if not fileExists('/.multinfo'):                        
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
-                                        cmd = 'reboot -d -f -h -i'                                                                 
-
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/osmini_dev_mtd0.sh'                  
-
-                                elif fileExists('/.multinfo'):   
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        cmd = 'flash_eraseall /dev/mtd2; sleep 2; nandwrite -p /dev/mtd2 /media/neoboot/ImagesUpload/.kernel/%s.vmlinux.gz; cp -Rf /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; reboot -f' % (getBoxHostName(),  getBoxHostName())
-                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/osmini_dev_mtd0.sh'
-
-                            self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
-                            self.close()
-
 ###################################################  
 #VUPLUS MIPS vu_dev_mtd2.sh             
             elif getCPUSoC() == '7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424'  or getCPUSoC() == '7241' or getCPUSoC() == '7362' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vusolose'  or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vuzero':
@@ -474,6 +410,109 @@ class StartImage(Screen):
                 self.messagebox = self.session.open(MessageBox, _('Wygląda na to że model STB nie jest wpierany przez NEOBOOT !!! '), MessageBox.TYPE_INFO, 8)
                 self.close()           
                 
+
+    def selectboot(self, answer):
+        if answer is True:
+            self.bootimage()
+        else:
+            self.selectboot2()
+            #self.session.open(MessageBox, _('Canceled update.'), MessageBox.TYPE_INFO, 7)
+
+
+    def selectboot2(self):
+                        if getImageNeoBoot() == 'Flash':                                        
+                            self.session.open(TryQuitMainloop, 2)
+                        elif getImageNeoBoot() != 'Flash':  
+                                cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...\n')           
+                                cmd2='ln -sfn /sbin/neoinitmips /sbin/init; reboot -d -f -h -i' 
+                                self.session.open(Console, _('NeoBoot ....'), [cmd])                                                         
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+                        self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd, cmd1])
+                        self.close() 
+
+#############################################################
+#MiracleBox Ultra - MIPS  mbultra_dev_mtd2.sh  
+    #def bootimage1(self):
+                            #os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            #self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
+                            #self.close()
+    def bootimage(self):
+            if getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
+                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 2 - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
+                        elif not fileExists('/usr/sbin/nandwrite' ):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety '))
+                        else: 
+                            if getImageNeoBoot() == 'Flash':                    
+                                if fileExists('/.multinfo'):  
+                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/mbultra_dev_mtd2.sh'                  
+                                elif not fileExists('/.multinfo'):   
+                                    cmd = 'ln -sfn /sbin/init.sysvinit /sbin/init; reboot -d -f -h -i'
+
+                            elif getImageNeoBoot() != 'Flash':                      
+                                if not fileExists('/.multinfo'):                        
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
+                                        cmd = 'reboot -d -f -h -i'                                                                 
+
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/mbultra_dev_mtd2.sh'                  
+
+                                elif fileExists('/.multinfo'):   
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        cmd = 'flash_eraseall /dev/mtd2; sleep 2; nandwrite -p /dev/mtd2 /media/neoboot/ImagesUpload/.kernel/%s.vmlinux.gz; cp -Rf /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; reboot -f' % (getBoxHostName(),  getBoxHostName())
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/mbultra_dev_mtd2.sh'
+
+                            self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
+                            self.close()
+
+###################################################
+#Edision OS MINI  - MIPS osmini_dev_mtd0.sh   
+            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini':                                      
+                        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
+                            self.myclose2(_('Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
+                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/vmlinux.gz'):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 2 - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz '))
+                        elif not fileExists('/usr/sbin/nandwrite' ):
+                            self.myclose2(_('#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety '))
+                        else: 
+                            if getImageNeoBoot() == 'Flash':                    
+                                if fileExists('/.multinfo'):  
+                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/osmini_dev_mtd0.sh'                  
+                                elif not fileExists('/.multinfo'):   
+                                    cmd = 'ln -sfn /sbin/init.sysvinit /sbin/init; reboot -d -f -h -i'
+
+                            elif getImageNeoBoot() != 'Flash':                      
+                                if not fileExists('/.multinfo'):                        
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
+                                        cmd = 'reboot -d -f -h -i'                                                                 
+
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        os.system('ln -sfn /sbin/neoinitmips /sbin/init')
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/osmini_dev_mtd0.sh'                  
+
+                                elif fileExists('/.multinfo'):   
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        cmd = 'flash_eraseall /dev/mtd2; sleep 2; nandwrite -p /dev/mtd2 /media/neoboot/ImagesUpload/.kernel/%s.vmlinux.gz; cp -Rf /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; reboot -f' % (getBoxHostName(),  getBoxHostName())
+                                    elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxHostName())):
+                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/osmini_dev_mtd0.sh'
+
+                            self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
+                            self.close()
+            else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
     def myclose2(self, message):
         self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
         self.close()
