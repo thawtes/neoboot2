@@ -137,7 +137,7 @@ class StartImage(Screen):
                 restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.'), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Full restart GUI now ?'))
 
-            elif getCPUtype() == 'ARMv7' and getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7'or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == '72604' or getBoxHostName() == 'vuzero4k' or getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse':
+            elif getCPUtype() == 'ARMv7' and getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7'or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k' or getCPUSoC() == '72604' or getBoxHostName() == 'vuzero4k' or getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse':
                 restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.'), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Full restart GUI now ?'))
 
@@ -302,31 +302,36 @@ class StartImage(Screen):
                             if getImageNeoBoot() == 'Flash':                                                
                                 if fileExists('/.multinfo'):
                                     os.system('cd /media/mmc; ln -sf "init.sysvinit" "/media/mmc/sbin/init"')
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p4.sh '                  
+                                    cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                    cmd1 = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p4.sh '                  
 
-                                elif not fileExists('/.multinfo'):   
-                                    cmd = 'ln -sf "init.sysvinit" "/sbin/init"; /etc/init.d/reboot'  
-                                    
+                                elif not fileExists('/.multinfo'): 
+                                    cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...')                                  
+                                    cmd1 = 'sleep 5; ln -sf "init.sysvinit" "/sbin/init"; reboot -dfhi'                                                   
+
                             elif  getImageNeoBoot() != 'Flash':                                                 
                                 if not fileExists('/.multinfo'):  
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):   
-                                        cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):  
+                                        cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                        cmd1 = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
                                     
                                     elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):     
                                         os.system('ln -sfn /sbin/neoinitarmvu /sbin/init')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p4.sh '                    
+                                        cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                        cmd1 = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p4.sh '                    
 
                                 elif fileExists('/.multinfo'):    
                                     if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/mmcblk0p4; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxVuModel() 
-                                        cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; /etc/init.d/reboot' %  getBoxVuModel() 
+                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/mmcblk0p1; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxVuModel() 
+                                        cmd1 = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; /etc/init.d/reboot' %  getBoxVuModel() 
 
                                     elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
                                         os.system('cd /media/mmc; ln -sf "neoinitarmvu" "/media/mmc/sbin/init"')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p4.sh '                                                                                       
-
-                            self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd])
-                            self.close()  
+                                        cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                        cmd1 = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p4.sh '                                                                                       
+                                                                                                         
+                            self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd, cmd1])
+                            self.close()
 
             #VUPLUS ARM - Duo4k vu_mmcblk0p6.sh                                                                  
             elif getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k' :
@@ -338,36 +343,36 @@ class StartImage(Screen):
                             if getImageNeoBoot() == 'Flash':                                                
                                 if fileExists('/.multinfo'):
                                     os.system('cd /media/mmc; ln -sf "init.sysvinit" "/media/mmc/sbin/init"')
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p6.sh '                  
+                                    cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                    cmd1 = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p6.sh '                  
 
-                                elif not fileExists('/.multinfo'):   
-                                    cmd = 'ln -sf "init.sysvinit" "/sbin/init"; /etc/init.d/reboot'  
+                                elif not fileExists('/.multinfo'): 
+                                    cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...')                                  
+                                    cmd1 = 'sleep 5; ln -sf "init.sysvinit" "/sbin/init"; reboot -dfhi'                                                   
 
                             elif  getImageNeoBoot() != 'Flash':                                                 
                                 if not fileExists('/.multinfo'):  
-                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):   
-                                        cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
+                                    if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):  
+                                        cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                        cmd1 = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
                                     
                                     elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):     
                                         os.system('ln -sfn /sbin/neoinitarmvu /sbin/init')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p6.sh '                    
+                                        cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                        cmd1 = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p6.sh '                    
 
                                 elif fileExists('/.multinfo'):    
                                     if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/mmcblk0p6; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxVuModel() 
-                                        cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; /etc/init.d/reboot' %  getBoxVuModel() 
+                                        cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/mmcblk0p1; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"' %  getBoxVuModel() 
+                                        cmd1 = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitarm" "/media/mmc/sbin/init"; /etc/init.d/reboot' %  getBoxVuModel() 
 
                                     elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
                                         os.system('cd /media/mmc; ln -sf "neoinitarmvu" "/media/mmc/sbin/init"')
-                                        cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p6.sh '                                                                                       
-
-                            self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd])
-                            self.close()  
-            else:
-                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
-                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
-                            self.close()
-
+                                        cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...') 
+                                        cmd1 = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/vu_mmcblk0p6.sh '                                                                                       
+                                                                                                         
+                            self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd, cmd1])
+                            self.close() 
 
 #################_____MIPS____################################## 
     def bootimageMIPS(self):
