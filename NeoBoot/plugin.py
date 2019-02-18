@@ -44,8 +44,8 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '2.02 '
-UPDATEVERSION = '2.06'
+PLUGINVERSION = '2.02'
+UPDATEVERSION = '2.07'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
