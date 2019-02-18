@@ -933,7 +933,7 @@ class TunerInfo(Screen):
          
     def iNFO(self):
         try:
-            cmd = ' cat /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.info'
+            cmd = ' cat /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/stbinfo'
             cmd1 = ''
             self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd,
                      cmd1]) 
