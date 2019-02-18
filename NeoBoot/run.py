@@ -113,9 +113,15 @@ class StartImage(Screen):
                             if fileExists('/.multinfo'):   
                                 os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; reboot -d -f -h -i')                 
                             elif not fileExists('/.multinfo'):                                  
-                                os.system('ln -sfn /sbin/init.sysvinit /sbin/init; reboot -d -f -h -i')
-                        elif getImageNeoBoot() != 'Flash':                     
-                                os.system('ln -sfn /sbin/neoinitarm /sbin/init; reboot -d -f -h -i')                                                          
+                                cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...\n')           
+                                cmd1='ln -sfn /sbin/init.sysvinit /sbin/init; reboot -d -f -h -i' 
+                                self.session.open(Console, _('NeoBoot ....'), [cmd, cmd1])
+
+                        elif getImageNeoBoot() != 'Flash':                                                                               
+                                cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...\n')           
+                                cmd1='ln -sfn /sbin/neoinitarm /sbin/init; reboot -d -f -h -i' 
+                                self.session.open(Console, _('NeoBoot ....'), [cmd, cmd1])
+
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
@@ -125,9 +131,10 @@ class StartImage(Screen):
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'h3'  or getTunerModel() == 'ini-1000sv':  #or getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv' or getBoxHostName() == 'osmini'                                 
                         if getImageNeoBoot() == 'Flash':                                        
                             self.session.open(TryQuitMainloop, 2)
-                        elif getImageNeoBoot() != 'Flash':                     
-                                cmd='ln -sfn /sbin/neoinitmips /sbin/init; reboot -d -f -h -i' 
-                                self.session.open(Console, _('NeoBoot ....'), [cmd])                                                         
+                        elif getImageNeoBoot() != 'Flash':  
+                                cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...\n')           
+                                cmd1='ln -sfn /sbin/neoinitmips /sbin/init; reboot -d -f -h -i' 
+                                self.session.open(Console, _('NeoBoot ....'), [cmd, cmd1])                                                         
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
@@ -333,7 +340,7 @@ class StartImage(Screen):
                             self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd, cmd1])
                             self.close()
 
-            #VUPLUS ARM - Duo4k vu_mmcblk0p6.sh                                                                  
+            #VUPLUS ARM - Duo4k vu_mmcblk0p6.sh                                             
             elif getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k' :
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) ))
