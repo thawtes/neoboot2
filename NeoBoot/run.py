@@ -347,7 +347,7 @@ class StartImage(Screen):
                             self.session.open(TryQuitMainloop, 2)
                         elif getImageNeoBoot() != 'Flash':  
                                 cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...\n')           
-                                cmd2='ln -sfn /sbin/neoinitmips /sbin/init; reboot -d -f -h -i' 
+                                cmd1='ln -sfn /sbin/neoinitmips /sbin/init; reboot -d -f -h -i' 
                                 self.session.open(Console, _('NeoBoot ....'), [cmd])                                                         
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
