@@ -73,7 +73,6 @@ class ManagerDevice(Screen):
             except:
                 name = ''
                 desc = ''
-
         else:
             name = ''
             desc = ''
@@ -207,6 +206,10 @@ class ManagerDevice(Screen):
             self.updateList()
 
     def saveMypoints(self):
+        if fileExists('/etc/fstab.org'):
+                cmd = 'cp -f /etc/fstab.org /etc/fstab' 
+                system(cmd)           
+                
         sel = self['list'].getCurrent()
         if sel:
             parts = sel[1].split()
@@ -335,6 +338,7 @@ class DevicesConf(Screen, ConfigListScreen):
         else:
             des = _('Size: ') + _('unavailable')
         item = NoSave(ConfigSelection(default='/media/' + device, choices=[('/media/' + device, '/media/' + device),
+         ('/media/neoboot', '/media/neoboot'),
          ('/media/hdd', '/media/hdd'),
          ('/media/hdd2', '/media/hdd2'),
          ('/media/hdd3', '/media/hdd3'),
@@ -408,6 +412,7 @@ class DevicesConf(Screen, ConfigListScreen):
             out.close()
             system('cp -r -f /etc/fstab /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files')
             self.device_uuid2 = result.split('UUID=')[1].split(' ')[0].replace('"', '')
+                
             if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager2'):
                 out1 = open('/etc/devicemanager.cfg', 'a')
                 line1 = '"' + self.device_uuid2 + '"' + ':' + self.mountp + '\n'

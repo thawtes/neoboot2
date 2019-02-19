@@ -487,7 +487,6 @@ class UnistallMultiboot(Screen):
             cmd3 = 'ln -sfn /sbin/init.sysvinit /sbin/init'
             cmd4 = 'chmod 777 /sbin/init; sleep 2'
             cmd4a = "echo -e '\nNeoBoot restoring media mounts....'"
-            cmd5 = 'mv /etc/init.d/volatile-media.sh.org /etc/init.d/volatile-media.sh; sleep 2'
             cmd6 = 'rm /media/neoboot/ImageBoot/.neonextboot;rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location; sleep 2'
             cmd7 = 'rm /media/neoboot/ImageBoot/.Flash; rm /media/neoboot/ImageBoot/.version'
             cmd7a = "echo -e '\n\nOdinstalowywanie neoboota...'"
@@ -503,7 +502,6 @@ class UnistallMultiboot(Screen):
              cmd3,
              cmd4,
              cmd4a,
-             cmd5,
              cmd6,
              cmd7,
              cmd7a,
@@ -511,6 +509,8 @@ class UnistallMultiboot(Screen):
              cmd8a,
              cmd9,
              cmd9a])
+            if fileExists('/etc/init.d/volatile-media.sh.org'):        
+                system('mv /etc/init.d/volatile-media.sh.org /etc/init.d/volatile-media.sh; sleep 2 ') 
             self.close()
 
 

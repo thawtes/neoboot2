@@ -53,6 +53,19 @@ def getCPUtype():
             cpu='MIPS'
     return cpu    
 
+#check install
+def getFSTAB():
+    cpu='UNKNOWN'
+    if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install'):
+        with open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install', 'r') as f:
+            lines = f.read()
+            f.close()
+        if lines.find('UUID') != -1:
+            install='OKinstall'
+        elif not lines.find('UUID') != -1:
+            install='NOinstall'
+    return install 
+
 #zwraca typ chipa prcesora    
 def getCPUSoC():
     chipset='UNKNOWN'
