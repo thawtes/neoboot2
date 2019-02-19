@@ -605,8 +605,8 @@ class NeoBootInstallation(Screen):
     def pakiet2(self, yesno):
         if yesno:
                 try:
-                    if os.path.isfile('/media/neoboot/ImageBoot/.neonextboot'): 
-                        os.system('rm -f /media/neoboot/ImageBoot/.neonextboot; rm -f /media/neoboot/ImageBoot/.version; rm -f /media/neoboot/ImageBoot/.Flash; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.ipk; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.bin')
+                    if os.path.isfile('/media/neoboot/ImagesUpload/.kernel/zImage*.ipk or /media/neoboot/ImagesUpload/.kernel/zImage*.bin' ): 
+                        os.system('rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.ipk; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.bin')
 
                     system('opkg update;opkg configure;sleep 3')                    
 
