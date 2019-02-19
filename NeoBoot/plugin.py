@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-  
-                               
+
+####################### _(-_-)_ gutosie _(-_-)_ #######################                                  
 from __init__ import _
 from Plugins.Extensions.NeoBoot.files import Harddisk 
 from Components.About import about                                                                                                                                                    
-from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
+from Plugins.Extensions.NeoBoot.files.stbbranding import getFSTAB, getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
 from enigma import getDesktop
 from enigma import eTimer
 from Screens.Screen import Screen                                                                                                                                               
@@ -44,9 +45,9 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '2.03'
-UPDATEVERSION = '2.08'
-         
+PLUGINVERSION = '2.04'
+UPDATEVERSION = '2.09'
+
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
@@ -99,8 +100,11 @@ class MyUpgrade(Screen):
             out.close()
             self.close()
         else:
+            if fileExists('/etc/fstab.org'):
+                cmd = 'cp -f /etc/fstab.org /etc/fstab; sleep 0.1; rm -f /etc/fstab.org' 
+                system(cmd) 
             self.close(self.session.open(MessageBox, _('No file location NeoBot, do re-install the plugin.'), MessageBox.TYPE_INFO, 10))
-        self.close()
+            self.close()
         return ImageChoose
 
     def wybierz(self):
@@ -279,15 +283,15 @@ class Opis(Screen):
             cmd2 = 'rm -R /sbin/neoinit*'
             cmd3 = 'ln -sfn /sbin/init.sysvinit /sbin/init'     
             cmd4 = 'cp -rf /etc/fstab.org /etc/fstab; rm /etc/fstab.org '
-            cmd5 = 'cp -rf /etc/init.d/volatile-media.sh.org /etc/init.d/volatile-media.sh; rm /etc/init.d/volatile-media.sh.org '
-            cmd6 = 'opkg install volatile-media; sleep 2; killall -9 enigma2'  
+            cmd5 = 'opkg install volatile-media; sleep 2; killall -9 enigma2'  
             self.session.open(Console, _('NeoBot was removed !!! \nThe changes will be visible only after complete restart of the receiver.'), [cmd,
              cmd1,
              cmd2,
              cmd3,
              cmd4,
-             cmd5,
-             cmd6])
+             cmd5,])
+            if os.path.isfile('/etc/init.d/volatile-media.sh.org'):
+                    os.system('mv /etc/init.d/volatile-media.sh.org /etc/init.d/volatile-media.sh')
             self.close()
 
 class Montowanie(Screen):
@@ -443,9 +447,12 @@ class NeoBootInstallation(Screen):
                     self.session.open(MessageBox, _('The directory %s is not writable.\nMake sure you select a writable directory instead.') % dir, type=MessageBox.TYPE_ERROR)
                     return False
             else:
-                dir = configele
-                self.session.open(MessageBox, _('The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\nMake sure you select a valid partition type.') % dir, type=MessageBox.TYPE_ERROR)
-                return False
+                if fileExists('/etc/devicemanager.cfg'):
+                    return True
+                else:
+                    dir = configele
+                    self.session.open(MessageBox, _('The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\nMake sure you select a valid partition type.') % dir, type=MessageBox.TYPE_ERROR)
+                    return False
         else:
             dir = configele
             self.session.open(MessageBox, _('The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\nMake sure you select a valid partition type.') % dir, type=MessageBox.TYPE_ERROR)
@@ -474,9 +481,9 @@ class NeoBootInstallation(Screen):
         if not os.path.isfile('/etc/fstab.org'):
             self.session.open(MessageBox, _('NeoBot - First use the Device Manager and mount the drives correctly !!!'), MessageBox.TYPE_INFO, 7)
             self.close()
-        if fileExists('/.multinfo'):
-            self.session.open(MessageBox, _('Sorry, NeoBoot can installed or upgraded only when booted from Flash.'), MessageBox.TYPE_INFO, 7)
-            self.close()
+        #if fileExists('/.multinfo'):
+            #self.session.open(MessageBox, _('Sorry, NeoBoot can installed or upgraded only when booted from Flash.'), MessageBox.TYPE_INFO, 7)
+            #self.close()
         else:
             self.first_installation()
 
@@ -521,27 +528,26 @@ class NeoBootInstallation(Screen):
                         mntdev = line.split(' ')[0]
 
                 f.close()
+                
                 mntid = os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
-                os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
-
+                os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')                
+                if getFSTAB() != 'OKinstall':              
+                    #os.system('blkid -c /dev/null /dev/sd* > /tmp/blkidlist')
+                    os.system('blkid -c /dev/null ' + mntdev + ' > /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
                 #fstabuuid = os.popen('blkid -s UUID -o value ' + mntdev).read()
-                #fstabuuidwrite = 'UUID=' + fstabuuid.strip() + '        /media/neoboot        auto        defaults\t       1        1'
+                #fstabuuidwrite = 'UUID=' + fstabuuid.strip() + '    /media/neoboot    auto    defaults\t   1    1'
                 #fileHandle = open('/etc/fstab', 'a')
                 #fileHandle.write(fstabuuidwrite)
-                #fileHandle.close()
-                os.system('blkid -c /dev/null /dev/sd* > /tmp/blkidlist')
-                os.system('blkid -c /dev/null ' + mntdev + ' > /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
-                system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
-
+                #fileHandle.close() 
+                system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
 
             #if not fileExists('/usr/lib/enigma2/python/Plugins/PLi'):                
                 #os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
-
             #if os.path.isfile('/etc/init.d/volatile-media.sh'):
                     #os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
                     
             if os.path.isfile('/media/neoboot/ImageBoot/.neonextboot'): 
-                    os.system('rm -f /media/neoboot/ImageBoot/.neonextboot; rm -f /media/neoboot/ImageBoot/.version; rm -f /media/neoboot/ImageBoot/.Flash; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.ipk; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.bin')
+                    os.system('rm -f /media/neoboot/ImageBoot/.neonextboot; rm -f /media/neoboot/ImageBoot/.version; rm -f /media/neoboot/ImageBoot/.Flash; ')
                     
             out1 = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'w')
             out1.write(self.mysel)
@@ -550,19 +556,6 @@ class NeoBootInstallation(Screen):
             out2.write('Flash ')
             out2.close()
             
-            #string = getImageNeoBoot()
-            #year = string[0:4]
-            #month = string[4:6]
-            #day = string[6:8]
-            #driversdate = '-'.join((year, month, day))
-            out = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.neo_info', 'w')
-            out.write('Kernel\n')
-            out.write('Kernel-Version: ' + about.getKernelVersionString() + '\n')
-            out.write('Image\n')
-            out.write('Image-Boot: ' + getImageNeoBoot() + '\n')
-            out.close()
-
-
             if fileExists('/etc/issue.net'):
                 try:
                     lines = open('/etc/hostname', 'r').readlines()
@@ -575,26 +568,46 @@ class NeoBootInstallation(Screen):
             out = open('/media/neoboot/ImageBoot/.version', 'w')
             out.write(PLUGINVERSION)
             out.close()
-            
-            self.installpakiet()
 
-        else:
-            self.session.open(MessageBox, _('Installation aborted !'), MessageBox.TYPE_INFO)
+            #string = getImageNeoBoot()
+            #year = string[0:4]
+            #month = string[4:6]
+            #day = string[6:8]
+            #driversdate = '-'.join((year, month, day))
+            out = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.neo_info', 'w')
+            out.write('Kernel\n')
+            out.write('Kernel-Version: ' + about.getKernelVersionString() + '\n')
+            out.write('NeoBoot\n')
+            out.write('NeoBoot-Version: ' + PLUGINVERSION + '\n')
+            out.close()            
+            
+            if fileExists('/.multinfo'):
+                self.session.open(MessageBox, _('Reinstallation completed.!\nFull installation available only from the level Flash.'), MessageBox.TYPE_INFO, 7)
+                self.close()
+            else:                
+                self.installpakiet()
 
     def installpakiet(self):
-        check = False
-        if check == False:
-            self.mysel = self['config'].getCurrent()
-            if fileExists('/proc/stb/info'): #vumodel'): ogranicza tylko dla vu+
-                message = _('\n ... q(-_-)p ...\nNeoBot to function properly need additional packages.\nSelect Yes and wait ...\nProces installation may take a few moments ...\nInstall ?')
-                ybox = self.session.openWithCallback(self.pakiet2, MessageBox, message, MessageBox.TYPE_YESNO)
-                ybox.setTitle(_('Installing packages ...'))
-            else:
-                self.session.open(MessageBox, _('Installation operation canceled. This is not a vuplus box !!!'), MessageBox.TYPE_INFO, 10)
+        if fileExists('/.multinfo'):
+            self.session.open(MessageBox, _('Sorry, NeoBoot can installed or upgraded only when booted from Flash.'), MessageBox.TYPE_INFO, 7)
+            self.close()
+        else:
+            check = False
+            if check == False:
+                self.mysel = self['config'].getCurrent()
+                if fileExists('/proc/stb/info'): #vumodel'): ogranicza tylko dla vu+
+                    message = _('\n ... q(-_-)p ...\nNeoBot to function properly need additional packages.\nSelect Yes and wait ...\nProces installation may take a few moments ...\nInstall ?')
+                    ybox = self.session.openWithCallback(self.pakiet2, MessageBox, message, MessageBox.TYPE_YESNO)
+                    ybox.setTitle(_('Installing packages ...'))
+                else:
+                    self.session.open(MessageBox, _('Installation operation canceled. This is not a vuplus box !!!'), MessageBox.TYPE_INFO, 10)
 
     def pakiet2(self, yesno):
         if yesno:
                 try:
+                    if os.path.isfile('/media/neoboot/ImageBoot/.neonextboot'): 
+                        os.system('rm -f /media/neoboot/ImageBoot/.neonextboot; rm -f /media/neoboot/ImageBoot/.version; rm -f /media/neoboot/ImageBoot/.Flash; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.ipk; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.bin')
+
                     system('opkg update;opkg configure;sleep 3')                    
 
                     if os.system('opkg list-installed | grep python-subprocess') != 0:
@@ -1005,7 +1018,6 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
                             message = _('NeoBoot wykryl niezgodnos kernela w flash, \nZainstalowac kernel dla flash image ? ?')
                             ybox = self.session.openWithCallback(self.updatekernel, MessageBox, message, MessageBox.TYPE_YESNO)
                             ybox.setTitle(_('Updating ... '))
-
     def pomoc(self):
         if fileExists('/.multinfo'):
             mess = _('Information available only when running Flash.')
@@ -1014,17 +1026,32 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             self.session.open(Opis)
 
     def ReinstallNeoBoot(self):
-        if not fileExists('/.multinfo'):
-            self.session.open(MessageBox, _('Sorry, Opcja dostepna tylko z poziomu image uruchomionego w neoboocie.'), MessageBox.TYPE_INFO, 7)
+        INSTALLbox = self.session.openWithCallback(self.reinstallboot, MessageBox, _('Wybierz Tak, by przeinstalowac neoboota.\n     NEOBOOT.'), MessageBox.TYPE_YESNO)
+        INSTALLbox.setTitle(_('Zainstaluj ponownie neoboota ?'))
+                
+    def reinstallboot(self, answer):        
+        if answer is True:
+            try:
+                cmd = "echo -e '\n\n%s '" % _('NEOBOOT - Please reinstall NeoBoot....\nPlease wait, done...\nrestart systemu...')
+                cmd1 = 'cp -f /etc/fstab.org /etc/fstab; rm -f /etc/fstab.org; rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location; sleep 5; killall -9 enigma2 '                                                                                       
+            except:
+                False
+            self.session.open(Console, _('NeoBoot ARM....'), [cmd, cmd1])
             self.close()
-            
+        else:
+            try:
+                self.session.open(MessageBox, _('Rezygnacja.'), MessageBox.TYPE_INFO, 4)
+                self.close()
+            except:
+                False
+         
     def deviceneoboot(self):
         self.session.open(Montowanie)
 
     def close_exit(self):
         if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
            if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
-               mess = _('Error - nie odnaleziono pliku kernela zImage-ipk ')
+               mess = _('Error - nie odnaleziono pliku kernela zImage-ipk\n Napraw problem, wybierz numer 3 na pilocie.\nZainstaluj jadro. ')
                self.session.open(MessageBox, mess, MessageBox.TYPE_INFO)                                      
 
         if fileExists('/.multinfo'):            
@@ -1147,8 +1174,11 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         from Plugins.Extensions.NeoBoot.files.tools import MBRestore
         self.session.open(MBRestore)
 
-    def updateList(self):
-        if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location'):
+    def updateList(self):        
+        if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location'):            
+            if fileExists('/etc/fstab.org'):
+                cmd = 'cp -f /etc/fstab.org /etc/fstab; sleep 0.1; rm -f /etc/fstab.org' 
+                system(cmd)          
             self.session.open(NeoBootInstallation)
         else:
             self.updateListOK()
@@ -1414,8 +1444,12 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             out = open('/media/neoboot/ImageBoot/.neonextboot', 'w')
             out.write(self.mysel)
             out.close()
-        from Plugins.Extensions.NeoBoot.run import StartImage
-        self.session.open(StartImage)
+        if fileExists('/media/usb/ImageBoot/') and fileExists('/media/hdd/ImageBoot/'): 
+                self.messagebox = self.session.open(MessageBox, _('[NeoBoot] \nError, you have neoboot installed on usb and hdd, \nUninstall one directories from one drive !!!\n'), MessageBox.TYPE_INFO, 15)
+                self.close()  
+        else:
+            from Plugins.Extensions.NeoBoot.run import StartImage
+            self.session.open(StartImage)
         
     def myClose(self, message):
         self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
@@ -1423,7 +1457,6 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
                 
 ####################### _(-_-)_ gutosie _(-_-)_ #######################
 
-####################### _(-_-)_ gutosie _(-_-)_ #######################
                                                
 def readline(filename, iferror = ''):
     if iferror[:3] == 'or:':
@@ -1464,7 +1497,7 @@ def checkversion(session):
             else:
                 session.open(NeoBootImageChoose)
         else:
-            session.open(MessageBox, _('Sorry: Wrong image in flash found. You have to install in flash Vu+ or Octagon-sf4008 Image !!!'), MessageBox.TYPE_INFO, 10)
+            session.open(MessageBox, _('Sorry: Wrong image in flash found. You have to install in flash image for you stb !!!'), MessageBox.TYPE_INFO, 10)
     else:
         session.open(NeoBootInstallation)
             
@@ -1500,3 +1533,5 @@ from Plugins.Plugin import PluginDescriptor
 
 def Plugins(**kwargs):
     return [PluginDescriptor(name='NeoBoot ', description='NeoBoot', where=PluginDescriptor.WHERE_MENU, fnc=menu), PluginDescriptor(name='NeoBoot', description=_('Installing multiple images'), icon='neo.png', where=PluginDescriptor.WHERE_PLUGINMENU, fnc=main)]
+
+####################### _(-_-)_ gutosie _(-_-)_ #######################
