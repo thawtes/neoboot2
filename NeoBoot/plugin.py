@@ -46,7 +46,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '2.04'
-UPDATEVERSION = '2.09'
+UPDATEVERSION = '2.10'
 
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -689,6 +689,17 @@ class NeoBootInstallation(Screen):
                         os.system('python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py')                   
                         os.system('dd if=/dev/kernel of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
 
+                    #gbquad4k  arm  
+                    elif getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k':
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; cd') 
+                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarm')
+                        os.system('opkg download kernel-image')
+                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName()) 
+                        os.system('python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py')                   
+                        os.system('dd if=/dev/kernel of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
+
+
                     #VUPLUS MIPS                                                                                                                                                                                                                 
                     elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'osmini' or getBoxHostName() == 'h3':   
                         if not fileExists('/usr/lib/enigma2/python/Tools/HardwareInfoVu.pyo'):
@@ -964,6 +975,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             if  getBoxVuModel() == 'duo4k':               
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p9 /media/mmc')
 
+            if getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k':
+                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p5 /media/mmc')
+
+
         self.list = []
         self.setTitle('         NeoBoot  %s  - Menu' % PLUGINVERSION + '          ' + 'Ver. update:  %s' % UPDATEVERSION)
         self['device_icon'] = Pixmap()
@@ -1179,7 +1194,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             if fileExists('/etc/fstab.org'):
                 cmd = 'cp -f /etc/fstab.org /etc/fstab; sleep 0.1; rm -f /etc/fstab.org' 
                 system(cmd)          
-            self.session.open(NeoBootInstallation)
+                self.session.open(NeoBootInstallation)
         else:
             self.updateListOK()
 
@@ -1503,23 +1518,28 @@ def checkversion(session):
             
 def main(session, **kwargs):
     try:
-        doMount=True
-        with open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r') as f:
-            mypath = f.readline().strip()
+        f = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r')
+        mypath = f.readline().strip()
+        f.close()
         if not os.path.exists('/media/neoboot'):
             system('mkdir /media/neoboot')
-        with open('/proc/mounts', 'r') as f:
-            for line in f.readlines():
-                if line.find('/media/neoboot') != -1:
-                    doMount=False
-                    break
-        if doMount:
-            cmd = 'mount ' + mypath + ' /media/neoboot'
-            system(cmd)
-    except Exception:
+        cmd = 'mount ' + mypath + ' /media/neoboot'
+        system(cmd)
+        f = open('/proc/mounts', 'r')
+        for line in f.readlines():
+            if line.find('/media/neoboot') != -1:
+                line = line[0:9]
+                break
+
+        cmd = 'mount ' + line + ' ' + mypath
+        system(cmd)
+        cmd = 'mount ' + mypath + ' /media/neoboot'
+        system(cmd)
+    except:
         pass
 
-    checkversion(session) 
+    checkversion(session)
+
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
