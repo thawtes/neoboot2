@@ -18,12 +18,16 @@ TARGET=Flash
 
 if [ -f $IMAGEBOOT ]; then
     TARGET=`cat $IMAGEBOOT`
-fi
-$IMAGE/$TARGET
+fi 
 	
-if [ -e $IMAGE/$TARGET/.control_ok ]; then
+if [ $TARGET = "Flash" ]; then
+    ln -sfn /sbin/init.sysvinit /sbin/init	
+
+else
+
+    if [ -e $IMAGE/$TARGET/.control_ok ]; then
           echo "No Error - Booting image normal ... ";  sleep 2
-else 
+    else 
           if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
                     echo "First start image - Proba uruchomienia nowego image... ";  sleep 5; rm -r -f $IMAGE/$TARGET/.control_boot_new_image 
           else 
@@ -43,8 +47,7 @@ else
               			            if [ -d /proc/stb ] ; then
               			                    echo " Install kernel image flash.... " $BOXNAME
    	    	                                    dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p6
-                                            fi                                            
-                                        fi 
+                                            fi                                             
                     fi                     
                                         
                     echo "Wrong kernel. Press number 3"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
@@ -55,5 +58,6 @@ else
                     sleep 7; reboot -f   
               fi
           fi
+    fi
 fi
 return 1
