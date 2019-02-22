@@ -46,5 +46,4 @@ if [ -f /etc/rcS.d/S50fat.sh ] ; then
                             rm -f /etc/rcS.d/S50fat.sh
                             echo "file S50fat.sh delete"  
 fi 
-wget -O /dev/null -q "http://localhost/web/message?text=UWAGA!!!...+Uruchom+NeoBoot+by+potwierdzic+start+image...%0AOperacja+w+toku...&type=2&timeout=08"
 echo ok                                                

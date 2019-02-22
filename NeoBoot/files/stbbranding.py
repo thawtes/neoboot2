@@ -55,7 +55,7 @@ def getCPUtype():
 
 #check install
 def getFSTAB():
-    cpu='UNKNOWN'
+    install='UNKNOWN'
     if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install'):
         with open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install', 'r') as f:
             lines = f.read()
@@ -66,6 +66,19 @@ def getFSTAB():
             install='NOinstall'
     return install 
 
+#check noe
+def getNeoMount():
+    neo='UNKNOWN'
+    if os.path.exists('/proc/mounts'):
+        with open('/proc/mounts', 'r') as f:
+            lines = f.read()
+            f.close()
+        if lines.find('/dev/sda1 /media/neoboot') != -1:
+            neo='neo_install_/dev/sda1'
+        elif lines.find('/dev/sdb1 /media/neoboot') != -1:
+            neo='neo_install_/dev/sdb1'
+    return neo 
+    
 #zwraca typ chipa prcesora    
 def getCPUSoC():
     chipset='UNKNOWN'
