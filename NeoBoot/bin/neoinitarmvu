@@ -26,23 +26,24 @@ else
 	if [ ! -d $LIBDIR ]; then
 		LIBDIR=/lib/modules/`ls /lib/modules | tail -n 1`
 	fi
-	if [ `mount | grep /proc | wc -l` -lt 1 ]; then
-	        /bin/mount -a	
+	if [ `mount | grep /proc | wc -l` -lt 1 ]; then	
+	        #/bin/mount -a	
 		/bin/mount -t proc proc /proc > /dev/null 2>&1
 		/bin/mount -t sysfs sysfs /sys > /dev/null 2>&1
 		/sbin/depmod -Ae > /dev/null 2>&1                
 	fi 	
 
-	echo "NeoBoot is starting mdev"
-	echo "/sbin/mdev" > /proc/sys/kernel/hotplug
-	/etc/init.d/mdev > /dev/null 2>&1
-
 	sleep 5
-	
-        #install=install2
-	mnttest="nouuid"
-	if [ -e $NEOBOOT/bin/install  ]; then
-        	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
+      
+	if [ ! -e $IMAGEBOOT  ]; then
+                $NEOBOOT/files/neo.sh 
+                echo "___________________neoMount_______________________ " 
+	fi
+
+	if [ ! -e $IMAGEBOOT  ]; then
+	    mnttest="nouuid"
+	    if [ -e $NEOBOOT/bin/install  ]; then
+    	        orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
 		selectinstall=`cat $NEOBOOT/bin/install`
 		for item in $orgimag1; do
 			selectmnt=`blkid | sed "/$selectinstall/!d" | cut -d":" -f1`
@@ -59,12 +60,12 @@ else
 				break;
 			fi 			
 		done
-	fi	
+	    fi	
 
-	if [ ! -e $NEO  ]; then
+	    if [ ! -e $NEO  ]; then
 		mkdir $NEO > /dev/null 2>&1
-	fi        
-	if [ $mnttest="nouuid" ] ; then
+	    fi        
+	    if [ $mnttest="nouuid" ] ; then
 	        echo "NeoBoot mount by Device"
 		DEVICES1=`find /dev/sd??`
 		for DEVICE in $DEVICES1;
@@ -82,66 +83,11 @@ else
 				break;
 			fi 
 		done
-	elif [ $mnttest="uuid" ]; then	
+	    elif [ $mnttest="uuid" ]; then	
 		echo "NEOBOOT mount by UUID"
-	fi
-##############___________________	
-	MODPROBE=/sbin/modprobe
+	    fi
+	fi             
 
-	echo "NeoBoot is loading modules"
-	for mod in dvb; do
-		$MODPROBE $mod
-	done
-
-	# Hack for loading modules which are not loaded on diffrent kernel images
-	/etc/init.d/modutils.sh
-	#
-
-	cat /etc/videomode2 > /proc/stb/video/videomode
-
-	#we must wait until udev has created the video device
-	(
-	if [ -d /proc/stb ]; then
-		while true; do
-			if [ -e /dev/dvb/adapter0/video0 ]; then
-				break;
-			fi;
-		done;
-	fi;
-	[ -e /etc/dropbear/dropbear_rsa_host_key ] && /usr/bin/showiframe /usr/share/bootlogo.mvi || /usr/bin/showiframe /usr/share/bootlogo_wait.mvi;
-	) &
-        
-        sleep 10
-        echo "Driverload end"
-
-	if [ -f $LIBDIR/kernel/fs/autofs4/autofs4.ko ]; then
-		/sbin/insmod $LIBDIR/kernel/fs/autofs4/autofs4.ko > /dev/null 2>&1
-	fi
-
-	if [ -e /tmp/.opd.inf ]; then
-		  break;
-	fi
-
-	#/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/fbclear > /dev/null 2>&1
-
-##############______________________
-
-
-#################################################	
-	if [ -e $NEOBOOT/bin/neobmarm ]; then
-            echo "  Neo-Boot start  boot manager  "
-            echo "  Waiting to change image - 20s "
-            echo " "
-	    chmod 0755 $NEOBOOT/bin/neobmarm
-	    $NEOBOOT/neologo.mvi > /dev/null 2>&1
-	    sleep 1
-	    $NEOBOOT/bin/neobmarm > /dev/null 2>&1
-	fi
-	if [ -e $NEOBOOT/bin/fbclear ]; then
-	        $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear; $NEOBOOT/bin/fbclear > /dev/null 2>&1
-        fi
-################################################   
-     
 	if [ ! -e $IMAGEBOOT ]; then
                   echo "reboot without a disk"
 		  ln -sfn /sbin/init.sysvinit /sbin/init
@@ -162,8 +108,9 @@ else
 		/bin/umount /media/hdd > /dev/null 2>&1
 		/usr/bin/showiframe /usr/share/bootlogo.mvi > /dev/null 2>&1
 	else
-                echo "NeoBoot is booting" $TARGET " from " $DEVICE  
-######### test boot new imaga>>>>	
+                echo "NeoBoot is booting" $TARGET                                  
+
+                ######### test boot new imaga>>>>	
                 if [ -e $IMAGE/$TARGET/.control_ok ]; then
 	                        [ $PL ] && echo "Nie ma bledu, normalny start image..." || echo "No Error - Booting image normal..."
                 else 
@@ -196,8 +143,8 @@ else
               			    fi
           			fi
                 fi
-######### test boot new image<<<<<                
-                                                
+                ######### test boot new image<<<<<                
+                                                                
                 if [ -d $NEO/ImageBoot/$TARGET ]; then			
 			if [ -f $NEO/ImageBoot/$TARGET/etc/init.d/udev ]; then
 				sed -ie s!"\$4"!"\$3"!g $NEO/ImageBoot/$TARGET/etc/init.d/udev
@@ -208,9 +155,9 @@ else
 			else
 				/usr/bin/showiframe /media/neoboot/ImageBoot/$TARGET/usr/share/bootlogo.mvi
 			fi
-
-
-			sleep 1
+			
+			sleep 3
+                        			
 			/bin/mount -o bind /dev $NEO/ImageBoot/$TARGET/dev
 			/bin/mount -o bind /proc $NEO/ImageBoot/$TARGET/proc
 			/bin/mount -o bind /sys $NEO/ImageBoot/$TARGET/sys
