@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-  
-
-####################### _(-_-)_ gutosie _(-_-)_ #######################                                  
+####################### _(-_-)_ gutosie _(-_-)_ ####################### 
+                                 
 from __init__ import _
 from Plugins.Extensions.NeoBoot.files import Harddisk 
 from Components.About import about                                                                                                                                                    
-from Plugins.Extensions.NeoBoot.files.stbbranding import getFSTAB, getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
+from Plugins.Extensions.NeoBoot.files.stbbranding import getNeoMount, getFSTAB, getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
 from enigma import getDesktop
 from enigma import eTimer
 from Screens.Screen import Screen                                                                                                                                               
@@ -45,8 +45,8 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '2.04'
-UPDATEVERSION = '2.10'
+PLUGINVERSION = '2.05'
+UPDATEVERSION = '2.11'
 
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -937,14 +937,32 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
     def __init__(self, session):
         Screen.__init__(self, session)
 
+        if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh'):
+            if getNeoMount() == 'neo_install_/dev/sda1': 
+                    #os.system('mkdir -p /media/neoboot2 ; mount /dev/sda1 /media/neoboot')        
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sda1 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+            elif getNeoMount() == 'neo_install_/dev/sdb1':
+                    #os.system('mkdir -p /media/neoboot2; mount /dev/sdb1 /media/neoboot2')        
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sdb1 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+
         if fileExists('/tmp/.init_reboot'):
             system('rm /tmp/.init_reboot')
 
         if fileExists('/.multinfo'):
-            if fileExists('/.control_boot_new_image'):  
-                    os.system('rm -f /.control_boot_new_image; touch /.control_ok ')          
-            if not fileExists('/.control_boot_new_image'):  
-                    os.system('touch /.control_ok ') 
+            if not fileExists('/.control_ok'):
+                if fileExists('/.control_boot_new_image'):  
+                    os.system('rm -f /.control_boot_new_image; echo "Image uruchomione OK\nNie kasuj tego pliku. \n\nImage started OK\nDo not delete this file."  > /.control_ok ')          
+                if not fileExists('/.control_boot_new_image'):  
+                    os.system('echo "Image uruchomione OK\nNie kasuj tego pliku. \n\nImage started OK\nDo not delete this file."  > /.control_ok')
+                    #os.system('touch /.control_ok ') 
 
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
@@ -1470,9 +1488,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
         self.close()
                 
-####################### _(-_-)_ gutosie _(-_-)_ #######################
-
-                                               
+                                                               
 def readline(filename, iferror = ''):
     if iferror[:3] == 'or:':
       data = iferror[3:]
@@ -1487,13 +1503,14 @@ def readline(filename, iferror = ''):
         PrintException()
     return data
 
+               
 def checkimage():
     mycheck = False
     if fileExists('/proc/stb/info'): #vumodel'): ogranicza tylko dla vu+
         mycheck = True
     else:
         mycheck = False
-    return mycheck
+    return mycheck  
 
 
 def checkversion(session):
@@ -1512,33 +1529,51 @@ def checkversion(session):
             else:
                 session.open(NeoBootImageChoose)
         else:
-            session.open(MessageBox, _('Sorry: Wrong image in flash found. You have to install in flash image for you stb !!!'), MessageBox.TYPE_INFO, 10)
+            session.open(MessageBox, _('Sorry: Wrong image in flash found.\n You have to install in flash image for you stb !!!'), MessageBox.TYPE_INFO, 10)
+
+    if fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location'):
+            if fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
+                session.open(NeoBootImageChoose)
     else:
         session.open(NeoBootInstallation)
             
+            
 def main(session, **kwargs):
-    try:
-        f = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r')
-        mypath = f.readline().strip()
-        f.close()
-        if not os.path.exists('/media/neoboot'):
-            system('mkdir /media/neoboot')
-        cmd = 'mount ' + mypath + ' /media/neoboot'
-        system(cmd)
-        f = open('/proc/mounts', 'r')
-        for line in f.readlines():
-            if line.find('/media/neoboot') != -1:
-                line = line[0:9]
-                break
+            if getNeoMount() == 'neo_install_/dev/sda1': 
+                session.open(NeoBootImageChoose)
+            elif getNeoMount() == 'neo_install_/dev/sdb1':
+                session.open(NeoBootImageChoose)
+            else:
+                main2(session)
 
-        cmd = 'mount ' + line + ' ' + mypath
-        system(cmd)
-        cmd = 'mount ' + mypath + ' /media/neoboot'
-        system(cmd)
-    except:
-        pass
+def main2(session, **kwargs):
+    if not fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
+        try:
+                f = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r')
+                mypath = f.readline().strip()
+                f.close()
+                if not fileExists('/media/neoboot'):
+                    os.mkdir('/media/neoboot')
+                    cmd = 'mount ' + mypath + ' /media/neoboot'
+                    os.system(cmd)
+                    f = open('/proc/mounts', 'r')
+                    for line in f.readlines():
+                        if line.find('/media/neoboot') != -1:
+                            line = line[0:9]
+                            break
 
-    checkversion(session)
+                    cmd = 'mount ' + line + ' ' + mypath
+                    os.system(cmd) 
+                    cmd = 'mount ' + mypath + ' /media/neoboot'
+                    os.system(cmd)    
+                else:
+                    pass
+                checkversion(session)               
+        except:
+            pass
+        checkversion(session)
+    else:
+        checkversion(session)
 
 
 def menu(menuid, **kwargs):

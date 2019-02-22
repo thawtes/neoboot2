@@ -92,7 +92,7 @@ class InstallImage(Screen, ConfigListScreen):
         self.CopyKernel = ConfigYesNo(default=True)
         self.TvList = ConfigYesNo(default=True) 
         self.Montowanie = ConfigYesNo(default=True)
-        self.LanWlan = ConfigYesNo(default=True)
+        self.LanWlan = ConfigYesNo(default=False)
         self.Sterowniki = ConfigYesNo(default=False)                        
         self.InstallSettings = ConfigYesNo(default=False)        
         self.ZipDelete = ConfigYesNo(default=False) 
@@ -133,7 +133,7 @@ class InstallImage(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_('Source Image file'), self.source))
         self.list.append(getConfigListEntry(_('Image Name'), self.target)) 
         self.list.append(getConfigListEntry(_('Do not copy files from Flash to the installed image ?'), self.CopyFiles ))         
-        self.list.append(getConfigListEntry(_('Copy the kernel of the installed system (recommended only for Vu+) ?'), self.CopyKernel ))         
+        self.list.append(getConfigListEntry(_('Copy the kernel of the installed system (recommended ?'), self.CopyKernel ))         
         self.list.append(getConfigListEntry(_('Copy the channel list ?'), self.TvList))  
         self.list.append(getConfigListEntry(_('Copy mounting disks ? (Recommended)'), self.Montowanie))
         self.list.append(getConfigListEntry(_('Copy network settings LAN-WLAN ?'), self.LanWlan))
@@ -273,7 +273,7 @@ class HelpInstall(Screen):
         message += _('Do not copy files from Flash to the installed image ?')
         message += _(' - po zaznaczeniu tej opcji nie zostanie nic skopiowane z image flash do instalowanego image w neoboot. \n\n')  
               
-        message += _('Copy the kernel of the installed system (recommended only for Vu+) ?')
+        message += _('Copy the kernel of the installed system (recommended ) ?')
         message += _(' - po zaznaczeniu tej opcji zostanie skopiowany plik jądra (kernel) instalowanego image do neoboota, zalecane tylko dla STB vuplus \n\n')
                 
         message += _('Copy the channel list ?')
