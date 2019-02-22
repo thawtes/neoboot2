@@ -46,7 +46,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '2.05'
-UPDATEVERSION = '2.11'
+UPDATEVERSION = '2.10'
 
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
