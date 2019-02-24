@@ -108,8 +108,8 @@ class StartImage(Screen):
             if fileExists('/media/mmc/etc/init.d/neobootmount.sh'):
                 os.system('rm -f /media/mmc/etc/init.d/neobootmount.sh;')
 
-            #DM900; AX HD60 4K                      
-            if getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':                  
+            #ARM procesor: DM900; AX HD60 4K                      
+            if or getBoxHostName == 'osmio4k' or getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':                  
                         if getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):   
                                 os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; reboot -d -f -h -i')                 
@@ -128,7 +128,7 @@ class StartImage(Screen):
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
                             self.close()                                                                                                                                                                                                       
 
-            #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS                                                                                                                                                                       # test -  ultra, osmini 
+            #MIPS procesor: MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS                                                                                                                                                                       # test -  ultra, osmini 
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'h3'  or getTunerModel() == 'ini-1000sv':  #or getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv' or getBoxHostName() == 'osmini'                                 
                         if getImageNeoBoot() == 'Flash':                                        
                             self.session.open(TryQuitMainloop, 2)

@@ -46,7 +46,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '2.05'
-UPDATEVERSION = '2.10'
+UPDATEVERSION = '2.11'
 
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -699,6 +699,16 @@ class NeoBootInstallation(Screen):
                         os.system('python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py')                   
                         os.system('dd if=/dev/kernel of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
 
+                    #osmio4k  arm  
+                    elif getBoxHostName == 'osmio4k':
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; cd') 
+                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarm')
+                        os.system('opkg download kernel-image')
+                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName()) 
+                        os.system('python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py')                   
+                        os.system('dd if=/dev/kernel of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
+
 
                     #VUPLUS MIPS                                                                                                                                                                                                                 
                     elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'osmini' or getBoxHostName() == 'h3':   
@@ -995,6 +1005,9 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
 
             if getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k':
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p5 /media/mmc')
+
+            #if getBoxHostName == 'osmio4k':
+                    #os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p5 /media/mmc')
 
 
         self.list = []
@@ -1424,7 +1437,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
     def ImageInstall(self):
         if not fileExists('/.multinfo'):                                                                                                                                                                                                                         
             KERNEL_VERSION = getKernelVersionString()             
-            if getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'bcm7251s' or getCPUSoC() == '7241' or getBoxHostName() == 'h7' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7278' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'h3':                   
+            if getBoxHostName == 'osmio4k' or getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k' or getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'bcm7251s' or getCPUSoC() == '7241' or getBoxHostName() == 'h7' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7278' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'h3':                   
                 self.extractImage()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
             else:
                 self.messagebox = self.session.open(MessageBox, _('Nie wykryto odpowiedniego STB do instalacji !!!!'), MessageBox.TYPE_INFO, 8)
