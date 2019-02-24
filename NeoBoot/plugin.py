@@ -948,20 +948,55 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         Screen.__init__(self, session)
 
         if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh'):
-            if getNeoMount() == 'neo_install_/dev/sda1': 
-                    #os.system('mkdir -p /media/neoboot2 ; mount /dev/sda1 /media/neoboot')        
+            if getNeoMount() == 'neo_install_/dev/sda1':        
                     os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
                     cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
                     cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sda1 /media/neoboot  \n')
                     cel.close()                                                                
                     os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
-            elif getNeoMount() == 'neo_install_/dev/sdb1':
-                    #os.system('mkdir -p /media/neoboot2; mount /dev/sdb1 /media/neoboot2')        
+            elif getNeoMount() == 'neo_install_/dev/sda2':        
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sda2 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+            elif getNeoMount() == 'neo_install_/dev/sdb1':      
                     os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
                     cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
                     cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sdb1 /media/neoboot  \n')
                     cel.close()                                                                
                     os.system('chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+            elif getNeoMount() == 'neo_install_/dev/sdb2':      
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sdb2 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+            elif getNeoMount() == 'neo_install_/dev/sdc1':      
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sdc1 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+            elif getNeoMount() == 'neo_install_/dev/sdd1':      
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sdd1 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+            elif getNeoMount() == 'neo_install_/dev/sde1':      
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sde1 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+            elif getNeoMount() == 'neo_install_/dev/sdf1':      
+                    os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                    cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh', 'w')
+                    cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\n/bin/mount /dev/sdf1 /media/neoboot  \n')
+                    cel.close()                                                                
+                    os.system('chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh') 
+                       
 
         if fileExists('/tmp/.init_reboot'):
             system('rm /tmp/.init_reboot')
@@ -1554,10 +1589,24 @@ def checkversion(session):
 def main(session, **kwargs):
             if getNeoMount() == 'neo_install_/dev/sda1': 
                 session.open(NeoBootImageChoose)
+            elif getNeoMount() == 'neo_install_/dev/sda2': 
+                session.open(NeoBootImageChoose)                
             elif getNeoMount() == 'neo_install_/dev/sdb1':
+                session.open(NeoBootImageChoose)                
+            elif getNeoMount() == 'neo_install_/dev/sdb2':
                 session.open(NeoBootImageChoose)
+            elif getNeoMount() == 'neo_install_/dev/sdc1':
+                session.open(NeoBootImageChoose)
+            elif getNeoMount() == 'neo_install_/dev/sdd1':
+                session.open(NeoBootImageChoose)                
+            elif getNeoMount() == 'neo_install_/dev/sde1':
+                session.open(NeoBootImageChoose)
+            elif getNeoMount() == 'neo_install_/dev/sdf1':
+                session.open(NeoBootImageChoose)
+
             else:
                 main2(session)
+
 
 def main2(session, **kwargs):
     if not fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
