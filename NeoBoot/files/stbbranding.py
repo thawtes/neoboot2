@@ -66,7 +66,7 @@ def getFSTAB():
             install='NOinstall'
     return install 
 
-#check noe
+#checking device  neo  
 def getNeoMount():
     neo='UNKNOWN'
     if os.path.exists('/proc/mounts'):
@@ -75,10 +75,24 @@ def getNeoMount():
             f.close()
         if lines.find('/dev/sda1 /media/neoboot') != -1:
             neo='neo_install_/dev/sda1'
+        if lines.find('/dev/sda2 /media/neoboot') != -1:
+            neo='neo_install_/dev/sda2'            
         elif lines.find('/dev/sdb1 /media/neoboot') != -1:
             neo='neo_install_/dev/sdb1'
+        elif lines.find('/dev/sdb2 /media/neoboot') != -1:
+            neo='neo_install_/dev/sdb2'
+        elif lines.find('/dev/sdc1 /media/neoboot') != -1:
+            neo='neo_install_/dev/sdc1'             
+        elif lines.find('/dev/sdd1 /media/neoboot') != -1:
+            neo='neo_install_/dev/sdd1' 
+        elif lines.find('/dev/sde1 /media/neoboot') != -1:
+            neo='neo_install_/dev/sde1'                         
+        elif lines.find('/dev/sdf1 /media/neoboot') != -1:
+            neo='neo_install_/dev/sdf1'                        
+            
     return neo 
     
+
 #zwraca typ chipa prcesora    
 def getCPUSoC():
     chipset='UNKNOWN'
