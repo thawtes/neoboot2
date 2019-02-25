@@ -35,8 +35,12 @@ fi
 mount -a -t auto  
 rdate -s ntp.task.gda.pl
 
-if [ ! -e /media/neoboot/ImageBoot/.neonextboot ] ; then 
-    /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh
+if [ ! -e /media/neoboot/ImageBoot/.neonextboot ] ; then
+    /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh   
+fi
+
+if [ ! -e /media/neoboot/ImageBoot/.neonextboot ] ; then
+    /usr/bin/enigma2_pre_start.sh   
 fi
                       
 if [ -f /etc/rcS.d/S50fat.sh ] ; then
