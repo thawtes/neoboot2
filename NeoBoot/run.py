@@ -109,7 +109,7 @@ class StartImage(Screen):
                 os.system('rm -f /media/mmc/etc/init.d/neobootmount.sh;')
 
             #ARM procesor: DM900; AX HD60 4K                      
-            if getBoxHostName == 'osmio4k' or getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':                  
+            if getBoxHostName == 'osmio4k' or getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':                  
                         if getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):   
                                 os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; reboot -d -f -h -i')                 
@@ -145,7 +145,7 @@ class StartImage(Screen):
                 restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.\n Zmiana kernel zalecane dla vuplus.'), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Full restart GUI now ?'))
 
-            elif getCPUtype() == 'ARMv7' and getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k' or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7'or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k' or getCPUSoC() == '72604' or getBoxHostName() == 'vuzero4k' or getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse':
+            elif getCPUtype() == 'ARMv7' and getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k' or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7' or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k' or getCPUSoC() == '72604' or getBoxHostName() == 'vuzero4k' or getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse':
                 restartbox = self.session.openWithCallback(self.selectboot, MessageBox, _('Wybierz:\n Tak - start image z podmiana kernel (zalecane dla VUPLUS.)\n\nWybierz:\nNie - bez wgrywania kernel( Nie zalecane).\n '), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Full restart GUI now ?'))
 
@@ -253,7 +253,7 @@ class StartImage(Screen):
         if getCPUtype() == 'ARMv7': #and        
             self.bootimageARM()
         elif getCPUtype() == 'MIPS': #and        
-            self.bootimageARM()
+            self.bootimageMIPS()
         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
@@ -300,9 +300,8 @@ class StartImage(Screen):
                             self.close()                                                          
 
 
-    def bootimageARM(self):
             #gbquad4k ARM  ARM gbquad4k_kernel.sh 
-            if getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k':  
+            elif getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k':  
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
                         elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxHostName()) ):

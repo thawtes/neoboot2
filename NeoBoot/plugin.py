@@ -46,7 +46,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '2.05'
-UPDATEVERSION = '2.11'
+UPDATEVERSION = '2.12'
 
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1603,13 +1603,13 @@ def main(session, **kwargs):
                 session.open(NeoBootImageChoose)
             elif getNeoMount() == 'neo_install_/dev/sdf1':
                 session.open(NeoBootImageChoose)
-
+            elif not fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
+                main2(session)
             else:
                 main2(session)
 
 
 def main2(session, **kwargs):
-    if not fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
         try:
                 f = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r')
                 mypath = f.readline().strip()
@@ -1634,13 +1634,10 @@ def main2(session, **kwargs):
         except:
             pass
         checkversion(session)
-    else:
-        checkversion(session)
-
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
-        return [(_('NeoBoot'),
+        return [(_('[NEOBOOT]'),
           main,
           'neo_boot',
           1)]

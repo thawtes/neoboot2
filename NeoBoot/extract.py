@@ -260,9 +260,9 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
             cmd = 'cp /etc/enigma2/settings %s/ImageBoot/%s/etc/enigma2' % (media, target)
             rc = os.system(cmd)
             if not os.path.exists('%s/ImageBoot/%s/etc/tuxbox/config' % (media, target)):
-                cmd = 'mkdir -p /etc/fstab %s/ImageBoot/%s/etc/tuxbox/config' % (media, target)
+                cmd = 'mkdir -p /etc/tuxbox/config %s/ImageBoot/%s/etc/tuxbox/config' % (media, target)
                 rc = os.system(cmd)
-                cmd = 'mkdir -p /etc/fstab %s/ImageBoot/%s/etc/tuxbox/scce' % (media, target)
+                cmd = 'mkdir -p /etc/tuxbox/scce %s/ImageBoot/%s/etc/tuxbox/scce' % (media, target)
                 rc = os.system(cmd)
             cmd = 'cp -a /etc/tuxbox/* %s/ImageBoot/%s/etc/tuxbox' % (media, target)
             rc = os.system(cmd)
