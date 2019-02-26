@@ -339,8 +339,6 @@ class StartImage(Screen):
                             self.session.open(Console, _('NeoBoot ARM....'), [cmd, cmd1])
                             self.close()  
 
-
-
             #gbquad4k ARM  ARM gbquad4k_kernel.sh 
             elif getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k':  
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
@@ -378,10 +376,7 @@ class StartImage(Screen):
 
                             self.session.open(Console, _('NeoBoot ARM....'), [cmd, cmd1])
                             self.close()  
-                            
-                            
-
-
+                                                        
             #Octagon SF4008 ARM  ARM - sf4008_mmcblk0p3.sh                                                                                   
             elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' :   
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
@@ -421,12 +416,12 @@ class StartImage(Screen):
                             self.close()  
 
             #VUPLUS ARM - vu_mmcblk0p1.sh                                                                                    
-            #elif getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse': 
-            elif getBoxHostName() or getCPUSoC() == ['ax60', 
-             'sf8008', 
-             'dm900',
-             '7444s', 
-              '7376'] :                           
+            elif getCPUSoC() == '7444s' or getBoxHostName() == 'vuultimo4k' or getCPUSoC() == '7376' or getBoxHostName() == 'vusolo4k' or getCPUSoC() == '7252s' or getBoxHostName() == 'vuuno4kse': 
+            #elif getBoxHostName() or getCPUSoC() == ['ax60', 
+             #'sf8008', 
+             #'dm900',
+             #'7444s', 
+             # '7376'] :                           
                         if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
                             self.myclose2(_('#############>>>>>>>>>\n\n\nError - w lokalizacji /media/neoboot/ImagesUpload/.kernel/  \nnie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) ))
                         elif not fileExists('/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxVuModel()) ):
