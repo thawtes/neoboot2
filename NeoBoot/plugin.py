@@ -46,7 +46,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '2.05'
-UPDATEVERSION = '2.12'
+UPDATEVERSION = '2.13'
 
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -689,6 +689,15 @@ class NeoBootInstallation(Screen):
                         os.system('python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py')                   
                         os.system('dd if=/dev/kernel of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
 
+                    #Zgemma h9  arm  
+                    elif getCPUSoC() == 'hi3798mv200' or getBoxHostName() == 'zgemmah9s':
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; cd') 
+                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarm')
+                        os.system('opkg download kernel-image')
+                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())                  
+                        os.system('dd if=/dev/mmcblk0p6 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
+
                     #gbquad4k  arm  
                     elif getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k':
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
@@ -749,7 +758,7 @@ class NeoBootInstallation(Screen):
                         os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())
                              
                     #OctagonSF4008 - DM900 - Zgemma h7S - Octagon sf 8008 - AX HD60 4K         
-                    elif getCPUSoC() == 'hi3798mv200' or getBoxHostName() == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251'  or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
+                    elif getCPUSoC() == 'hi3798mv200' or getBoxHostName() == 'zgemmah9s' or getCPUSoC() == 'hi3798mv200' or getBoxHostName() == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251'  or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
                         os.system('cp -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; chmod 0755 /sbin/neoinitarm; ln -sfn /sbin/neoinitarm /sbin/init')                             
 
                     else:
@@ -1018,6 +1027,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             if os.path.exists('/proc/stb/info/boxtype'):
                 if getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p3 /media/mmc')
+
+            if os.path.exists('/proc/stb/info/boxtype'):
+                if getCPUSoC() == 'hi3798mv200' or getBoxHostName() == 'zgemmah9s':   
+                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p7 /media/mmc')
 
             if getCPUSoC() == '3798mv200' or getBoxHostName == 'sf8008':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p13 /media/mmc')  
@@ -1472,7 +1485,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
     def ImageInstall(self):
         if not fileExists('/.multinfo'):                                                                                                                                                                                                                         
             KERNEL_VERSION = getKernelVersionString()             
-            if getBoxHostName == 'osmio4k' or getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k' or getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'bcm7251s' or getCPUSoC() == '7241' or getBoxHostName() == 'h7' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7278' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'h3':                   
+            if getCPUSoC() == 'hi3798mv200' or getBoxHostName() == 'zgemmah9s' or getBoxHostName == 'osmio4k' or getCPUSoC() == 'bcm7252s' or getBoxHostName() == 'gbquad4k' or getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'bcm7251s' or getCPUSoC() == '7241' or getBoxHostName() == 'h7' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7278' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'h3':                   
                 self.extractImage()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
             else:
                 self.messagebox = self.session.open(MessageBox, _('Nie wykryto odpowiedniego STB do instalacji !!!!'), MessageBox.TYPE_INFO, 8)
@@ -1551,15 +1564,19 @@ def readline(filename, iferror = ''):
         PrintException()
     return data
 
-               
+def Freespace(dev):
+    statdev = os.statvfs(dev)
+    space = statdev.f_bavail * statdev.f_frsize / 1024
+    print '[NeoBoot] Free space on %s = %i kilobytes' % (dev, space)
+    return space
+
 def checkimage():
     mycheck = False
     if fileExists('/proc/stb/info'): #vumodel'): ogranicza tylko dla vu+
         mycheck = True
     else:
         mycheck = False
-    return mycheck  
-
+    return mycheck
 
 def checkversion(session):
     version = 0
@@ -1577,67 +1594,67 @@ def checkversion(session):
             else:
                 session.open(NeoBootImageChoose)
         else:
-            session.open(MessageBox, _('Sorry: Wrong image in flash found.\n You have to install in flash image for you stb !!!'), MessageBox.TYPE_INFO, 10)
-
-    if fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location'):
-            if fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
-                session.open(NeoBootImageChoose)
+            session.open(MessageBox, _('Sorry: Wrong image in flash found. You have to install in flash Vu+ or Octagon-sf4008 Image !!!'), MessageBox.TYPE_INFO, 10)
     else:
         session.open(NeoBootInstallation)
-            
-            
+
 def main(session, **kwargs):
+    try:
+            if not fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
+                if fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh'):
+                    os.system('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neo.sh')
+                    checkversion(session)
+                else:
+                    main2(session)
             if getNeoMount() == 'neo_install_/dev/sda1': 
-                session.open(NeoBootImageChoose)
+                checkversion(session)
             elif getNeoMount() == 'neo_install_/dev/sda2': 
-                session.open(NeoBootImageChoose)                
+                checkversion(session)                
             elif getNeoMount() == 'neo_install_/dev/sdb1':
-                session.open(NeoBootImageChoose)                
+                checkversion(session)                
             elif getNeoMount() == 'neo_install_/dev/sdb2':
-                session.open(NeoBootImageChoose)
+                checkversion(session)
             elif getNeoMount() == 'neo_install_/dev/sdc1':
-                session.open(NeoBootImageChoose)
+                checkversion(session)
             elif getNeoMount() == 'neo_install_/dev/sdd1':
-                session.open(NeoBootImageChoose)                
+                checkversion(session)                
             elif getNeoMount() == 'neo_install_/dev/sde1':
-                session.open(NeoBootImageChoose)
+                checkversion(session)
             elif getNeoMount() == 'neo_install_/dev/sdf1':
-                session.open(NeoBootImageChoose)
+                checkversion(session)
             elif not fileExists('/media/neoboot/ImgeBoot/.neonextboot'):
                 main2(session)
             else:
                 main2(session)
+    except Exception:
+        pass
 
+    checkversion(session)
 
-def main2(session, **kwargs):
-        try:
-                f = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r')
-                mypath = f.readline().strip()
-                f.close()
-                if not fileExists('/media/neoboot'):
-                    os.mkdir('/media/neoboot')
-                    cmd = 'mount ' + mypath + ' /media/neoboot'
-                    os.system(cmd)
-                    f = open('/proc/mounts', 'r')
-                    for line in f.readlines():
-                        if line.find('/media/neoboot') != -1:
-                            line = line[0:9]
-                            break
+def main(session, **kwargs):
+    try:
+        doMount=True
+        with open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r') as f:
+            mypath = f.readline().strip()
+        if not os.path.exists('/media/neoboot'):
+            system('mkdir /media/neoboot')
+        with open('/proc/mounts', 'r') as f:
+            for line in f.readlines():
+                if line.find('/media/neoboot') != -1:
+                    doMount=False
+                    break
+        if doMount:
+            cmd = 'mount ' + mypath + ' /media/neoboot'
+            system(cmd)
+    except Exception:
+        pass
 
-                    cmd = 'mount ' + line + ' ' + mypath
-                    os.system(cmd) 
-                    cmd = 'mount ' + mypath + ' /media/neoboot'
-                    os.system(cmd)    
-                else:
-                    pass
-                checkversion(session)               
-        except:
-            pass
-        checkversion(session)
+    checkversion(session) 
+
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
-        return [(_('[NEOBOOT]'),
+        return [(_('NEOBOOT'),
           main,
           'neo_boot',
           1)]
