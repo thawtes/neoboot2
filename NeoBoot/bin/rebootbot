@@ -20,6 +20,10 @@ if [ -f $IMAGEBOOT ]; then
     TARGET=`cat $IMAGEBOOT`
 fi 
 	
+if [ -e $IMAGE/$TARGET//usr/bin/enigma2_pre_start.sh ] ; then
+    rm -f /usr/bin/enigma2_pre_start.sh   
+fi
+
 if [ $TARGET = "Flash" ]; then
     ln -sfn /sbin/init.sysvinit /sbin/init	
 
@@ -60,4 +64,27 @@ else
           fi
     fi
 fi
+
+chmod 755 /etc/init.d/neomountboot.sh
+
+                        orgimag=`mount | sed '/sd/!d' | cut -d" " -f1`
+                        rm -f $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh
+                           for item in $orgimag; do
+                               ohdd=`echo  $item | cut -d"/" -f3`
+                               nhdd=`mount | sed "/\$ohdd/!d" | sed q | cut -d" " -f3`
+                               if [ $nhdd == '$NEO' ]; then
+                                  echo $nhdd
+                                  echo "mkdir "$nhdd  >> $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh
+                                  echo "mount "$item $nhdd  >> $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh 
+                               else
+                                  echo "umount "$nhdd  >> $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh
+                                  echo "mkdir "$nhdd  >> $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh
+                                  echo "mount "$item $nhdd  >> $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh 
+                                  echo ok 
+                               fi    
+                           done	
+                        chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh 
+
+                        echo "NEOBOOT init mount enigma2_pre_start.sh "
+                        sleep 10
 return 1
