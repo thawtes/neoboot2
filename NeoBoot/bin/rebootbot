@@ -64,9 +64,9 @@ else
           fi
     fi
 fi
-
-chmod 755 /etc/init.d/neomountboot.sh
-
+if [ -e /etc/init.d/neomountboot.sh ] ; then
+    chmod 755 /etc/init.d/neomountboot.sh
+fi    
                         orgimag=`mount | sed '/sd/!d' | cut -d" " -f1`
                         rm -f $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh
                            for item in $orgimag; do
@@ -85,6 +85,5 @@ chmod 755 /etc/init.d/neomountboot.sh
                            done	
                         chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh 
 
-                        echo "NEOBOOT init mount enigma2_pre_start.sh "
-                        sleep 10
+                        echo "NeoBOOT created the file mount enigma2_pre_start.sh "
 return 1
