@@ -43,58 +43,33 @@ if [ $VUMODEL = "ultimo4k" ] || [ $VUMODEL = "solo4k" ] || [ $VUMODEL = "uno4kse
                 if [ -e /.multinfo ]; then                                            
                             if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then  
                                 cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init
-                                if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
-                                    echo "Boot - Flash. Instalacja kernel do /dev/mmcblk0p1..."                                                                                                           
+                                if [ -e /media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin ] ; then
+                                    echo "Boot - Flash. Instalacja kernel do /dev/mmcblk0p1..."  
+                                    [ $PL ] && echo "Instalacja pliku kernel bin..." || echo "Instaling kernel bin file "                                                                                                                                              
                                     if [ -d /proc/stb ] ; then
                       	    	            dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin of=/dev/mmcblk0p1
                                     fi
-
-                                    if [ ! -e "$D/lib/modules/`uname -r`" ]; then
-                                            mkdir -p $D/lib/modules/`uname -r`
-                                    fi
-                                    if [ -n "$D" ]; then
-                                            depmodwrapper -a -b $D `uname -r`
-                                    else
-                                        depmod -a `uname -r`
-                                    fi
-
-                                    rm -f /tmp/zImage
-                                    true
-                                    [ $PL ] && echo "Przenoszenie pliku kernel bin do /tmp" || echo "Moving the kernel file to /tmp"                                      
-                                    sleep 2
-                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk  
-                                    echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p1..."                                  
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
+                                    rm -f /tmp/zImage                                     
                                     cat /dev/mmcblk0p1 | grep "kernel"                                   
+                                    echo "Start image Flash z dysku hdd lub usb..."
+                                    sleep 5
                                 fi                                                   
                             fi                        
-                        update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
-                        echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                          
+                            update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
+                            echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                          
+
 
                 elif [ ! -e /.multinfo ]; then
                             if [ -f /proc/stb/info/vumodel ] || [ ! -e /proc/stb/info/boxtype ] ; then                                                         
-                                    if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
-                                        echo "Reboot - Flash. Instalacja kernel do /dev/mmcblk0p1..."                                                                           
+                                    if [ -e /media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin ] ; then
+                                        [ $PL ] && echo "Instalacja pliku kernel bin..." || echo "Instaling kernel bin file "                                                                                                                  
                                         if [ -d /proc/stb ] ; then
                                                     dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$VUMODEL.bin conv=noerror conv=sync of=/dev/mmcblk0p1
                                         fi
-                                        if [ ! -e "$D/lib/modules/`uname -r`" ]; then
-                                                mkdir -p $D/lib/modules/`uname -r`
-                                        fi
-                                        if [ -n "$D" ]; then
-                                                depmodwrapper -a -b $D `uname -r`
-                                        else
-                                            depmod -a `uname -r`
-                                        fi
-
-                                        rm -f /tmp/zImage
-                                        true
-                                        [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
-                                        sleep 2                                    
-                                        cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk
-                                        echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p1..."
-                                        opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk                                
+                                        echo "Reboot - Flash. Instalacja kernel /dev/mmcblk0p1..."                                                                                                       
                                         cat /dev/mmcblk0p1 | grep "kernel"
+                                        echo "Start-restart Flash image..."
+                                        sleep 5
                                     fi
                                
                             fi                                                                       
@@ -120,24 +95,15 @@ if [ $VUMODEL = "ultimo4k" ] || [ $VUMODEL = "solo4k" ] || [ $VUMODEL = "uno4kse
                                     if [ -d /proc/stb ] ; then
                                                     dd if=/tmp/zImage of=/dev/mmcblk0p1
                                     fi                                    
-                                    if [ ! -e "$D/lib/modules/`uname -r`" ]; then
-                                                mkdir -p $D/lib/modules/`uname -r`
-                                    fi
-                                    if [ -n "$D" ]; then
-                                                depmodwrapper -a -b $D `uname -r`
-                                    else
-                                            depmod -a `uname -r`
-                                    fi
                                     rm -f /tmp/zImage
-                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
-                                    sleep 2                                      
-                                    rm -f /tmp/zImage
-                                    true 
-                                    cat /dev/mmcblk0p1 | grep "kernel"1 
+                                    cat /dev/mmcblk0p1 | grep "kernel" 
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
+                                    echo "Start image z Flash..."
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " VUPLUS z procesorem arm zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                     echo "Typ procesora: " $CHIPSET " STB"                                                                          
+                                    echo "Start image z dysku hdd lub usb..."
+                                    sleep 5
                                 fi
                         else        
                                     [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."
@@ -147,29 +113,16 @@ if [ $VUMODEL = "ultimo4k" ] || [ $VUMODEL = "solo4k" ] || [ $VUMODEL = "uno4kse
                                     sleep 2 
                                     if [ -d /proc/stb ] ; then
                                             dd if=/tmp/zImage of=/dev/mmcblk0p1
-                                    fi
-                                    if [ ! -e "$D/lib/modules/`uname -r`" ]; then
-                                            mkdir -p $D/lib/modules/`uname -r`
-                                    fi
-                                    if [ -n "$D" ]; then
-                                            depmodwrapper -a -b $D `uname -r`
-                                    else
-                                            depmod -a `uname -r`
-                                    fi
-                                    rm -f /tmp/zImage
-                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
-                                    sleep 2                                      
-                                    rm -f /tmp/zImage
-                                    true                                    
+                                    fi                                     
+                                    rm -f /tmp/zImage                                                                      
                                     cat /dev/mmcblk0p1 | grep "kernel"
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " VU+ zmieniony."
-                                    sleep 2
                                     echo "Za chwile nastapi restart systemu..."
-                                    sleep 2
                                     echo "Used Kernel: " $TARGET  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                                    sleep 2
                                     echo "Typ procesora: " $CHIPSET " STB"                                             
+                                    echo "Start innego image z Flash..."
+                                    sleep 5
                         fi                        
                         sleep 5; reboot -d -f -h -i
             fi

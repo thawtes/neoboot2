@@ -42,14 +42,6 @@ if [ $TARGET = "Flash" ]; then
                                     echo "Instalacja kernel do /dev/mtd0..."                
 		                    nandwrite -p /dev/mtd0 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
                                     update-alternatives --remove vmlinux vmlinux-$KERNEL || true
-                                fi
-                                if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk ] ; then
-                                    echo "Przenoszenie pliku kernel do /tmp..."
-                                    sleep 2
-                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk /tmp/zImage.ipk  
-                                    echo "Instalacja kernel do /dev/mtd0..."                                 
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
-
                                 fi                                                     
                         fi
                         update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
@@ -67,14 +59,7 @@ if [ $TARGET = "Flash" ]; then
                                     sleep 2                                                    
 		                    nandwrite -p /dev/mtd0 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
                                     update-alternatives --remove vmlinux vmlinux-$KERNEL || true
-                                fi
-                                if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk ] ; then
-                                    echo "Przenoszenie pliku kernel do /tmp..."
-                                    sleep 2                                 
-                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk /tmp/zImage.ipk   
-                                    echo "Instalacja kernel zImage.ipk..."                                                                      
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
-                                fi                                                                                                                
+                                fi                                                                                                               
                             fi                            
                             update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                             echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel

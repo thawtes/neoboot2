@@ -41,52 +41,29 @@ if [ $BOXNAME = "h7" ] || [ $CHIPSET = "bcm7251s" ]; then
     if [ $TARGET = "Flash" ]; then                       
                 if [ -e /.multinfo ]; then                                             
                                 cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init
-                                if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk ] ; then
-                                    echo "Boot - Flash. Instalacja kernel do /dev/mmcblk0p2..."                                                                                                           
+                                if [ -e /media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin ] ; then
+                                    [ $PL ] && echo "Instalacja pliku kernel.bin do Flash " || echo "Instaling the kernel.bin file to Flash"                                                                                                                                          
                                     if [ -d /proc/stb ] ; then
                                             python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py
                                             dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin conv=noerror conv=sync of=/dev/kernel                      	    	            
-                                    fi
-
-                                    if [ ! -e "$D/lib/modules/`uname -r`" ]; then
-                                            mkdir -p $D/lib/modules/`uname -r`
-                                    fi
-                                    if [ -n "$D" ]; then
-                                            depmodwrapper -a -b $D `uname -r`
-                                    else
-                                        depmod -a `uname -r`
-                                    fi
-
-                                    rm -f /tmp/zImage
-                                    true
-                                    [ $PL ] && echo "Przenoszenie pliku kernel bin do /tmp" || echo "Moving the kernel file to /tmp"                                      
-                                    sleep 2
-                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk /tmp/zImage.ipk  
-                                    echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p2..."                                  
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
+                                    fi                                     
                                     cat /dev/kernel | grep "kernel"                                   
+                                    echo "Boot - Flash z hdd lub usb..."  
                                 fi                                                                          
                                 update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
                                 echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                          
-
                 elif [ ! -e /.multinfo ]; then                                                        
-                                    if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk ] ; then
-                                        echo "Reboot - Flash. Instalacja kernel do /dev/mmcblk0p2..."                                                                           
+                                    if [ -e /media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin ] ; then
+                                        [ $PL ] && echo "Instalacja pliku kernel.bin do Flash " || echo "Instaling the kernel.bin file to Flash"                                                                                                                
                                         if [ -d /proc/stb ] ; then
                                                     python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py
                                                     dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-$BOXNAME.bin conv=noerror conv=sync of=/dev/kernel                                                    
                                         fi
-                                        true
-                                        [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."                                      
-                                        sleep 2                                    
-                                        cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk /tmp/zImage.ipk
-                                        echo "Instalacja kernel zImage.ipk do /dev/mmcblk0p2..."
-                                        opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk                                
                                         cat /dev/kernel | grep "kernel"
-                                        sleep 2
                                         update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                         echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                         [ $PL ] && " NEOBOOT - zainstalowano kernel-image - " $TARGET  "Za chwile nastapi restart systemu !!!"  || " NEOBOOT - installed kernel-image - " $TARGET  "The system will restart in a moment !!!" 
+                                        echo "Reboot - Flash."
                                     fi                                                                                                     
                 fi
                 sleep 5; reboot -d -f -h -i 
@@ -107,15 +84,14 @@ if [ $BOXNAME = "h7" ] || [ $CHIPSET = "bcm7251s" ]; then
                                                     dd if=dd if=/tmp/zImage of=/dev/kernel                                    
                                     fi
                                     rm -f /tmp/zImage
-                                    true 
-                                    cat /dev/kernel | grep "kernel"1 
+                                    cat /dev/kernel | grep "kernel" 
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " VUPLUS z procesorem arm zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                     echo "Typ procesora: " $CHIPSET " STB"                                                                          
                                 fi
                         else        
-                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to..."
+                                    [ $PL ] && echo "Przenoszenie pliku kernel do /tmp..." || echo "Moving the kernel file to /tmp..."
                                     sleep 2
                                     cp -fR $IMAGE/$TARGET/boot/zImage.$BOXNAME /tmp/zImage
                                     echo "Instalacja kernel bin do /dev/mmcblk0p2..."
@@ -124,16 +100,12 @@ if [ $BOXNAME = "h7" ] || [ $CHIPSET = "bcm7251s" ]; then
                                                     python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py
                                                     dd if=dd if=/tmp/zImage of=/dev/kernel                                                      
                                     fi
-                                    rm -f /tmp/zImage
-                                    true                                    
+                                    rm -f /tmp/zImage                                    
                                     cat /dev/kernel | grep "kernel"
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " H7 zmieniony."
-                                    sleep 2
                                     echo "Za chwile nastapi restart systemu..."
-                                    sleep 2
                                     echo "Used Kernel: " $TARGET  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                                    sleep 2
                                     echo "Typ procesora: " $CHIPSET " STB"                                             
                         fi                        
                         sleep 5; reboot -d -f -h -i

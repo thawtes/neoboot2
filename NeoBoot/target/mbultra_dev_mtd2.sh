@@ -35,7 +35,7 @@ fi
 if [ $TARGET = "Flash" ]; then                    
                 if [ -e /.multinfo ]; then                                            
                         if [ $BOXNAME = "mbultra" ] || [ $CHIPSET = "bcm7424" ]; then 
-                            if [ -f /proc/stb/info/boxtype ]; then
+                            if [ -f /proc/stb/info/boxtype ]; then 
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
                                     echo "Kasowanie kernel z /dev/mtd2..."                                    
                                     flash_erase /dev/mtd2 0 0
@@ -43,14 +43,7 @@ if [ $TARGET = "Flash" ]; then
                                     echo "Instalacja kernel do /dev/mtd2..."                
                 		    nandwrite -p /dev/mtd2 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
                                     update-alternatives --remove vmlinux vmlinux-$KERNEL || true
-                                fi
-                                if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk ] ; then
-                                    echo "Przenoszenie pliku kernel do /tmp..."
-                                    sleep 2
-                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk /tmp/zImage.ipk  
-                                    echo "Instalacja kernel do /dev/mtd2..."                                 
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
-                                fi                            
+                                fi                           
                             fi
                         fi
                         update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
@@ -67,14 +60,7 @@ if [ $TARGET = "Flash" ]; then
                                     sleep 2                                                    
 		                    nandwrite -p /dev/mtd2 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
                                     update-alternatives --remove vmlinux vmlinux-$KERNEL || true
-                                fi
-                                if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk ] ; then
-                                    echo "Przenoszenie pliku kernel do /tmp..."
-                                    sleep 2                                 
-                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk /tmp/zImage.ipk   
-                                    echo "Instalacja kernel zImage.ipk..."                                                                      
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
-                                fi                             
+                                fi                            
                             fi                            
                 fi
                 echo " NEOBOOT Start sytem - " $TARGET  "Za chwile nastapi restart !!!"
