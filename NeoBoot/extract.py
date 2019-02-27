@@ -196,7 +196,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         if Montowanie == 'True':
             os.system('echo "Skopiowano montowanie."')
             if os.path.exists('%s/ImageBoot/%s/etc/fstab' % (media, target)):
-                cmd = 'mv %s/ImageBoot/%s/etc/fstab %s/ImageBoot/%s/etc/fstab.org' % (media,
+                cmd = 'mv %s/ImageBoot/%s/etc/fstab %s/ImageBoot/%s/etc/fstab.tmp' % (media,
                  target,
                  media,
                  target)
@@ -206,18 +206,18 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                  target,
                  media,
                  target)
-                rc = os.system(cmd)
+                rc = os.system(cmd)              
             cmd = 'cp -r /etc/fstab %s/ImageBoot/%s/etc/fstab' % (media, target)
             rc = os.system(cmd)
-            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
-            rc = os.system(cmd)
+            cmd1 = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
+            rc = os.system(cmd1)
 
         if LanWlan == 'True':
             if os.path.exists('%s/ImageBoot/%s/etc/vtiversion.info' % (media, target)):
                 os.system('echo "Nie skopiowano LAN-WLAN, nie zalecane dla tego image."')
-            if os.path.exists('/etc/vtiversion.info') and os.path.exists('%s/usr/lib/enigma2/python/Plugins/PLi' % (media, target)):
+            elif os.path.exists('/etc/vtiversion.info') and os.path.exists('%s/usr/lib/enigma2/python/Plugins/PLi' % (media, target)):
                 os.system('echo "Nie skopiowano LAN-WLAN, nie zalecane dla tego image."')
-            if os.path.exists('/etc/bhversion') and os.path.exists('%s/usr/lib/enigma2/python/Plugins/PLi' % (media, target)):
+            elif os.path.exists('/etc/bhversion') and os.path.exists('%s/usr/lib/enigma2/python/Plugins/PLi' % (media, target)):
                 os.system('echo "Nie skopiowano LAN-WLAN, nie zalecane dla tego image."')
             else:                
                 if os.path.exists('/etc/wpa_supplicant.wlan0.conf'):
@@ -915,7 +915,24 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
                 
 #ARM
     elif getCPUtype() == 'ARMv7':
-        if os.path.exists('/media/neoboot/ImagesUpload/sf4008'):
+        os.chdir('/media/neoboot/ImagesUpload')
+        if os.path.exists('/media/neoboot/ImagesUpload/h9/rootfs.ubi'):
+                os.chdir('h9')
+                os.system('mv -f rootfs.ubi rootfs.bin')
+                    
+                os.system('echo "Instalacja - ubi_reader w toku..."')            
+                if os.path.exists('/media/neoboot/ImagesUpload/h9/rootfs.ubi'):
+                    os.system('mv -f rootfs.ubi rootfs.bin') 
+                cmd = 'chmod 777 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.pyo'
+                rc = os.system(cmd)
+                cmd = 'python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.pyo rootfs.bin -o /media/neoboot/ubi'
+                rc = os.system(cmd)
+                os.chdir('/home/root')
+                os.system('mv /media/neoboot/ubi/rootfs/* /media/neoboot/ImageBoot/%s/' % target)                
+                cmd = 'chmod -R +x /media/neoboot/ImageBoot/' + target
+                rc = os.system(cmd)
+
+        elif os.path.exists('/media/neoboot/ImagesUpload/sf4008'):
             os.system('echo "Instalacja systemu Octagon SF4008."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/sf4008/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/sf4008/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
@@ -984,10 +1001,14 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('echo "Instalacja systemu Galaxy4k."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/update/galaxy4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/update/galaxy4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
-        elif os.path.exists('/media/neoboot/ImagesUpload/zgemma/h7'):
+        elif os.path.exists('/media/neoboot/ImagesUpload/zgemma/h7/rootfs.tar.bz2'):
             os.system('echo "Instalacja systemu Zgemma H7."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/zgemma/h7/rootfs.tar.bz2; tar -jxf /media/neoboot/ImagesUpload/zgemma/h7/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
-            rc = os.system(cmd)                                                    
+            rc = os.system(cmd)   
+        elif os.path.exists('/media/neoboot/ImagesUpload/zgemma/h9/rootfs.tar.bz2'):
+            os.system('echo "Instalacja systemu Zgemma H9S ."')
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/zgemma/h9/rootfs.tar.bz2; tar -jxf /media/neoboot/ImagesUpload/zgemma/h9/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            rc = os.system(cmd)                                                                          
         elif os.path.exists('/media/neoboot/ImagesUpload/miraclebox/mini4k'):
             os.system('echo "Instalacja systemu Miraclebox mini4k."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/miraclebox/mini4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/miraclebox/mini4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
@@ -1004,8 +1025,31 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('echo "Instalacja systemu Qviart lunix3-4k w toku..."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/update/lunix3-4k; tar -jxvf /media/neoboot/ImagesUpload/update/lunix3-4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
+       #if os.path.exists('/media/neoboot/ImagesUpload/sf4008'):
+            #os.chdir('sf4008')
+        #if os.path.exists('/media/neoboot/ImagesUpload/gigablue'):
+           # os.chdir('gigablue')
+            #if os.path.exists('/media/neoboot/ImagesUpload/gigablue/quad'):
+                #os.chdir('quad')
+        #if os.path.exists('/media/neoboot/ImagesUpload/hd51'):
+            #os.chdir('hd51')
+        #if os.path.exists('/media/neoboot/ImagesUpload/zgemma'):
+            #os.chdir('zgemma')
+            #if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h7'):
+                #os.chdir('h7')
+        #if os.path.exists('/media/neoboot/ImagesUpload/h9'):
+            #os.chdir('h9')
+            #os.system('mv -f rootfs.ubi rootfs.bin')
+        #if os.path.exists('/media/neoboot/ImagesUpload/dm900'):
+            #os.chdir('dm900')
+        #if os.path.exists('/media/neoboot/ImagesUpload/dm920'):
+            #os.chdir('dm920')
+
+
+
         else:
             os.system('echo "NeoBoot wykrył dłąd!!! Prawdopodobnie brak pliku instalacyjnego."')
+
 
     if BlackHole == 'True':
         if 'BlackHole' in source and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Blackhole' % (media, target)):
@@ -1087,7 +1131,14 @@ def RemoveUnpackDirs():
     elif os.path.exists('/media/neoboot/ImagesUpload/osmini'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/osmini')  
     elif os.path.exists('/media/neoboot/ImagesUpload/xp1000 '):
-        rc = os.system('rm -r /media/neoboot/ImagesUpload/xp1000 ')                
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/xp1000 ') 
+    elif os.path.exists('/media/neoboot/ImagesUpload/h9'):
+        rc = os.system('mv /media/neoboot/ImagesUpload/bootargs.bin /media/neoboot/ImagesUpload/h9; mv /media/neoboot/ImagesUpload/fastboot.bin /media/neoboot/ImagesUpload/h9')                                                                                                
+        shutil.rmtree('h9')         
+    elif os.path.exists('/media/neoboot/ImagesUpload/h7'):
+        rc = os.system('mv /media/neoboot/ImagesUpload/bootargs.bin /media/neoboot/ImagesUpload/h7; mv /media/neoboot/ImagesUpload/fastboot.bin /media/neoboot/ImagesUpload/h7')                                                                                                
+        shutil.rmtree('h7')        
+                       
     os.system('echo "..........................................."')
     return 0
 #END            

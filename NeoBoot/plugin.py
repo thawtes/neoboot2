@@ -45,8 +45,8 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '2.05'
-UPDATEVERSION = '2.13'
+PLUGINVERSION = '2.06'
+UPDATEVERSION = '2.14'
 
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1143,10 +1143,17 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         self.session.open(Montowanie)
 
     def close_exit(self):
-        if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
-           if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
-               mess = _('Error - nie odnaleziono pliku kernela zImage-ipk\n Napraw problem, wybierz numer 3 na pilocie.\nZainstaluj jadro. ')
-               self.session.open(MessageBox, mess, MessageBox.TYPE_INFO)                                      
+        system('touch /tmp/.init_reboot')
+        if not fileExists('/.multinfo'):            
+            out = open('/media/neoboot/ImageBoot/.neonextboot', 'w')
+            out.write('Flash')
+            out.close()
+        self.close()
+                        
+        #if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
+           #if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
+               #mess = _('Error - nie odnaleziono pliku kernela zImage-ipk\n Napraw problem, wybierz numer 3 na pilocie.\nZainstaluj jadro. ')
+               #self.session.open(MessageBox, mess, MessageBox.TYPE_INFO)                                      
 
         if fileExists('/.multinfo'):            
             with open('/media/neoboot/ImageBoot/.neonextboot', 'r') as f:
@@ -1654,7 +1661,7 @@ def main(session, **kwargs):
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
-        return [(_('NEOBOOT'),
+        return [(_('NeoBOOT'),
           main,
           'neo_boot',
           1)]
