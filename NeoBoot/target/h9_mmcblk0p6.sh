@@ -101,8 +101,8 @@ if [ $BOXNAME = "zgemmah9s" ] || [ $CHIPSET = "hi3798mv200" ]; then
         fi
     fi                               
 else
-                    cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init
-                    echo "STB: " $CHIPSET " "$BOXNAME" "
+                    ln -sfn /sbin/init.sysvinit /sbin/init
+                    echo "CHIPSET: " $CHIPSET " BOXNAME: "$BOXNAME" "
                     echo "$TARGET "  > $NEOBOOTMOUNT/ImageBoot/.neonextboot
                     echo "Error - Nie wpierany model STB !!! "
                     exit 0

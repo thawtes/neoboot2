@@ -61,7 +61,7 @@ if [ $VUMODEL = "zero4k" ] ; then
                 [ $PL ] && echo " Zainstalowano kernel image  " $TARGET  " "  || echo " Installed kernel image - "$TARGET" "
                 cat /dev/mmcblk0p4 | grep "kernel"                             
                 echo "Used Kernel: " $TARGET > $NEOBOOTMOUNT/ImagesUpload/.kernel/used_flash_kernel
-                echo "STB: " $CHIPSET " "$BOXNAME" "$VUMODEL" "
+                echo "CHIPSET: " $CHIPSET " BOXNAME: "$BOXNAME" MODEL: "$VUMODEL" "
                 sleep 5; reboot -d -f -h -i 
         fi
     else              	    
@@ -99,14 +99,14 @@ if [ $VUMODEL = "zero4k" ] ; then
                         cat /dev/mmcblk0p4 | grep "kernel"
                         update-alternatives --remove vmlinux vmlinux-`uname -r` || true                        
                         echo "Used Kernel: " $TARGET  > $NEOBOOTMOUNT/ImagesUpload/.kernel/used_flash_kernel 
-                        echo "STB: " $CHIPSET " "$BOXNAME" "$VUMODEL" "
+                        echo "CHIPSET: " $CHIPSET " BOXNAME: "$BOXNAME" MODEL: "$VUMODEL" "
                         sleep 5; reboot -d -f -h -i
                 fi 
         fi
     fi                               
 else
-                    cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init
-                    echo "STB: " $CHIPSET " "$BOXNAME" "$VUMODEL" "
+                    ln -sfn /sbin/init.sysvinit /sbin/init
+                    echo "CHIPSET: " $CHIPSET " BOXNAME: "$BOXNAME" MODEL: "$VUMODEL" "
                     echo "$TARGET "  > $NEOBOOTMOUNT/ImageBoot/.neonextboot
                     echo "Error - Nie wpierany model STB !!! "
                     exit 0

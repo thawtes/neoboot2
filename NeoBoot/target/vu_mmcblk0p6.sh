@@ -105,8 +105,8 @@ if [ $VUMODEL = "duo4k" ] ; then
         fi
     fi                               
 else
-                    cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init
-                    echo "STB: " $CHIPSET " "$BOXNAME" "$VUMODEL" "
+                    ln -sfn /sbin/init.sysvinit /sbin/init
+                    echo "CHIPSET: " $CHIPSET " BOXNAME: "$BOXNAME" MODEL: "$VUMODEL" "
                     echo "$TARGET "  > $NEOBOOTMOUNT/ImageBoot/.neonextboot
                     echo "Error - Nie wpierany model STB !!! "
                     exit 0
