@@ -1,11 +1,6 @@
 #!/bin/sh
 #script - gutosie 
 
-KERNEL=`uname -r` 
-IMAGE=/media/neoboot/ImageBoot
-IMAGENEXTBOOT=/media/neoboot/ImageBoot/.neonextboot
-BOXNAME=$( cat /etc/hostname)   
-
 if [ -f /proc/stb/info/vumodel ];  then  
     VUMODEL=$( cat /proc/stb/info/vumodel )     
 fi 
@@ -26,8 +21,16 @@ if [ -f /tmp/zImage ];  then
     rm -f /tmp/zImage    
 fi
 
-if [ -f $IMAGENEXTBOOT ]; then
-  TARGET=`cat $IMAGENEXTBOOT`
+KERNEL=`uname -r` 
+IMAGE=ImageBoot
+IMAGENEXTBOOT=/ImageBoot/.neonextboot
+NEOBOOTMOUNT=$( cat /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location) 
+BOXNAME=$( cat /etc/hostname) 
+# $NEOBOOTMOUNT$IMAGE 
+# $NEOBOOTMOUNT
+
+if [ -f $NEOBOOTMOUNT$IMAGENEXTBOOT ]; then
+  TARGET=`cat $NEOBOOTMOUNT$IMAGENEXTBOOT`
 else
   TARGET=Flash              
 fi
@@ -84,7 +87,7 @@ else
                                     flash_eraseall /dev/mtd1
                                     echo "Wgrywanie kernel do /dev/mtd1"                                    
                                     sleep 2
-		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz  
+		                    nandwrite -p /dev/mtd1 $NEOBOOTMOUNT$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz  
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
@@ -95,7 +98,7 @@ else
                                     flash_eraseall /dev/mtd1 
                                     echo "Wgrywanie kernel do /dev/mtd1"
                                     sleep 2                                                     
-		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz                                                                                                     
+		                    nandwrite -p /dev/mtd1 $NEOBOOTMOUNT$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz                                                                                                     
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                                       
