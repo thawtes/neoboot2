@@ -1,0 +1,972 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: NeoBoot / by gutosie\n"
+"POT-Creation-Date: 2019-03-15 03:00+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME\n"
+"Language-Team: TEAM <EMAIL@ADDRESS>\n"
+"Language: LANGUAGE <ll_CC>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-SourceCharset: UTF-8\n"
+"X-Generator: TM2TURK by thawtes\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "    NeoBot - Available media:"
+msgstr ""
+
+msgid "   \n   Available: "
+msgstr ""
+
+msgid " (Partition %d)"
+msgstr ""
+
+msgid " - opcja kopiuje configi oscama i cccam (openpli -domyślnie)\n\n"
+msgstr ""
+
+msgid " - opcja kopiuje listę kanałów z flasha do instalowanego image w neoboocie.\n\n"
+msgstr ""
+
+msgid " - opcja kopiuje ustawienia oprogramowania z flasza do instalowanego systemu w neoboocie.\n\n"
+msgstr ""
+
+msgid " - opcja przenosi do instalowanego image w neoboot ustawienia montowania podłaczonych urządzeń do tunera.\n\n"
+msgstr ""
+
+msgid " - opcja przenosi pliki z zawartymi ustawieniami dla sieci lan i wlan. \n\n "
+msgstr ""
+
+msgid " - opcja przenosi z flasza sterowniki do instalowanego image w neoboocie, zalecane tylko w przypadku jeśli instalujemy image od innego model niż posiadamy.\n\n"
+msgstr ""
+
+msgid " - opcja przeznaczona dla image blackhole, pomaga uruchomić BH w neoboot \n\n"
+msgstr ""
+
+msgid " - opcja w niektórych przypadkach naprawia w instalowanym image polączenie FTP (ang. File Transfer Protocol) \n\n"
+msgstr ""
+
+msgid " - po instalacji, opcja kasuje plik zip image z katalogu ImagesUpload. \n\n"
+msgstr ""
+
+msgid " - po zaznaczeniu tej opcji nie zostanie nic skopiowane z image flash do instalowanego image w neoboot. \n\n"
+msgstr ""
+
+msgid " - po zaznaczeniu tej opcji zostanie skopiowany plik jądra (kernel) instalowanego image do neoboota, zalecane tylko dla STB vuplus \n\n"
+msgstr ""
+
+msgid " -Wybierz kursorem pilota oprogramowanie do zainstalowania (w lewo lub prawo).\n\n"
+msgstr ""
+
+msgid " -Zmień nazwę image - aby zmienić naciśnij na pilocie niebieski.\n\n"
+msgstr ""
+
+msgid " is already installed.\n Please try another name."
+msgstr ""
+
+msgid "#############>>>>>>>>>\n\n\nError 2 - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz "
+msgstr ""
+
+msgid "#############>>>>>>>>>\n\n\nError 3 - w lokalizacji /usr/sbin/ \nnie odnaleziono pliku nandwrite\nmusisz zainstalowac dodatkowe pakiety "
+msgstr ""
+
+msgid "%03d MB"
+msgstr ""
+
+msgid "%d.%03d GB"
+msgstr ""
+
+msgid "1. If you do not have a media formatted with the ext3 or ext4 is open to the Device Manager <Initialize>, select the drive and format it.\n\n"
+msgstr ""
+
+msgid "1. Requirements: For proper operation of the device NeoBota are required USB stick or HDD.\n\n"
+msgstr ""
+
+msgid "2. Go to the device manager and install correctly hdd and usb ...\n\n"
+msgstr ""
+
+msgid "2. NeoBot is fully automated\n\n"
+msgstr ""
+
+msgid "3. Install NeoBota on the selected device.\n\n"
+msgstr ""
+
+msgid "3. To install a new image in MultiBocie should be sent by FTP software file compressed in ZIP or NIF to the folder: \n/media/neoboot/ImagesUpload and remote control plugin NeoBoot use the green button <Installation>\n\n"
+msgstr ""
+
+msgid "4. For proper installation and operation of additional image multiboot, use only the image intended for your receiver. !!!\n\n"
+msgstr ""
+
+msgid "4. Install the needed packages...\n\n"
+msgstr ""
+
+msgid "5. By installing the multiboot images of a different type than for your model STB DOING THIS AT YOUR OWN RISK !!!\n\n"
+msgstr ""
+
+msgid "5. For proper installation XenoBota receiver must be connected to the Internet.\n\n"
+msgstr ""
+
+msgid "6. In the event of a problem with the installation cancel and  inform the author of the plug of a problem.\n\n"
+msgstr ""
+
+msgid "6. The installed to multiboot images, it is not indicated update to a newer version.\n\n"
+msgstr ""
+
+msgid "A required tool (%s) was not found."
+msgstr ""
+
+msgid "After selecting OK start Mounting Manager, option Mount - green\n"
+msgstr ""
+
+msgid "Aktualizacja IPTVPlayer na zainstalowanych image."
+msgstr ""
+
+msgid "Aktualizacja listy TV na zainstalowanych image."
+msgstr ""
+
+msgid "An unknown error occurred!"
+msgstr ""
+
+msgid "Are you sure you want to completely remove NeoBoota of your image?\n\nIf you choose so all directories NeoBoota will be removed.\nA restore the original image settings Flash."
+msgstr ""
+
+msgid "Backup"
+msgstr ""
+
+msgid "Before upgrading it is recommended that you make a backup NeoBoot.\n"
+msgstr ""
+
+msgid "Boot Image"
+msgstr ""
+
+msgid "Brak miejca do zrobienia kopii obrazu. Potrzebne jest 150 Mb wolnego miejsca na kopie obrazu."
+msgstr ""
+
+msgid "Can't unmount partition, make sure it is not being used for swap or record/timeshift paths"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Canceled ... NeoBoot will not work properly !!! NeoBoot works only on VuPlus box !!!"
+msgstr ""
+
+msgid "Canceled ... NeoBoot will not work properly !!! NeoBoot works only on VuPlus box, Ultimo4k, Solo4k, Uno4k !!!"
+msgstr ""
+
+msgid "Canceled update."
+msgstr ""
+
+msgid "Cancelled ... NeoBot will not work correctly !!!"
+msgstr ""
+
+msgid "Card"
+msgstr ""
+
+msgid "Checking filesystem..."
+msgstr ""
+
+msgid "Choose where to mount your devices to:"
+msgstr ""
+
+msgid "Compact flash"
+msgstr ""
+
+msgid "Completed assembly of disks.\nReturn to installation ?"
+msgstr ""
+
+msgid "Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?"
+msgstr ""
+
+msgid "Continues mounting equipment..."
+msgstr ""
+
+msgid "Copy config SoftCam ?"
+msgstr ""
+
+msgid "Copy MediaPortal ?"
+msgstr ""
+
+msgid "Copy mounting disks ? (Recommended)"
+msgstr ""
+
+msgid "Copy network settings LAN-WLAN ?"
+msgstr ""
+
+msgid "Copy Settings to the new Image"
+msgstr ""
+
+msgid "Copy the channel list ?"
+msgstr ""
+
+msgid "Copy the drivers ? (Recommended only other image.)"
+msgstr ""
+
+msgid "Copy the kernel of the installed system (recommended ) ?"
+msgstr ""
+
+msgid "Copy the kernel of the installed system (recommended ?"
+msgstr ""
+
+msgid "Creating filesystem"
+msgstr ""
+
+msgid "Creating partition"
+msgstr ""
+
+msgid "Czekaj usuwam..."
+msgstr ""
+
+msgid "Czekaj usuwam....."
+msgstr ""
+
+msgid "Czy napewno chcesz wyczy\xc5\x9bci\xc4\x87"
+msgstr ""
+
+msgid "Czyszenie z pobranych obraz\xc3\xb3w"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete Confirmation"
+msgstr ""
+
+msgid "Delete Image zip after Install ?"
+msgstr ""
+
+msgid "Delete the selected image - "
+msgstr ""
+
+msgid "Deleting in progress...\n"
+msgstr ""
+
+msgid "Device Manager"
+msgstr ""
+
+msgid "Device Manager encountered an error, disk drives not installed correctly !!!"
+msgstr ""
+
+msgid "Device: "
+msgstr ""
+
+msgid "Do not copy files from Flash to the installed image ?"
+msgstr ""
+
+msgid "Do You really want to install NeoBoot in:\n "
+msgstr ""
+
+msgid "Do you want to install this image now?"
+msgstr ""
+
+msgid "Do you want to run the manager to mount the drives correctly ?\n"
+msgstr ""
+
+msgid "Do you want to run the update now ?\n"
+msgstr ""
+
+msgid "Download Failed !!"
+msgstr ""
+
+msgid "Download latest OpenATV Image"
+msgstr ""
+
+msgid "Download latest OpenPLi Image"
+msgstr ""
+
+msgid "Download latest OpenVIX Image"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
+
+msgid "Downloading available only from the image Flash."
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Error - nie odnaleziono pliku kernela zImage-ipk\n Napraw problem, wybierz numer 3 na pilocie.\nZainstaluj jadro. "
+msgstr ""
+
+msgid "Error - w lokalizacji /media/neoboot/ImagesUpload/.kernel/ \nnie odnaleziono pliku kernela vmlinux.gz "
+msgstr ""
+
+msgid "Error code"
+msgstr ""
+
+msgid "Error: %s\nRetry?"
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+msgid "External"
+msgstr ""
+
+msgid "External Storage %s"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Finished"
+msgstr ""
+
+msgid "For proper operation NeoBota type device is required USB stick or HDD, formatted on your system files Linux ext3 or ext4..\n\n"
+msgstr ""
+
+msgid "Full restart GUI now ?"
+msgstr ""
+
+msgid "GB"
+msgstr ""
+
+msgid "GUI needs a restart.\nDo you want to Restart the GUI now?"
+msgstr ""
+
+msgid "Hard disk"
+msgstr ""
+
+msgid "HARD DISK: "
+msgstr ""
+
+msgid "Have fun !!!"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Here is the list of mounted devices in Your STB\nPlease choose a device where You would like to install NeoBoot"
+msgstr ""
+
+msgid "Ilo\xc5\x9b\xc4\x87 wolnego miejsca w Superbocie: "
+msgstr ""
+
+msgid "Image Name"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Info disc"
+msgstr ""
+
+msgid "Informacje NeoBoota"
+msgstr ""
+
+msgid "Information available only when running Flash."
+msgstr ""
+
+msgid "Initialize"
+msgstr ""
+
+msgid "Initializing storage device..."
+msgstr ""
+
+msgid "Instalacja"
+msgstr ""
+
+msgid "Instalacja tylko z poziomu systemu flash."
+msgstr ""
+
+msgid "Install"
+msgstr ""
+
+msgid "Install Confirmation"
+msgstr ""
+
+msgid "Install Kernel"
+msgstr ""
+
+msgid "Installation"
+msgstr ""
+
+msgid "Installation operation canceled. This is not a vuplus box !!!"
+msgstr ""
+
+msgid "Installing multiple images"
+msgstr ""
+
+msgid "Installing packages ..."
+msgstr ""
+
+msgid "Instruction"
+msgstr ""
+
+msgid "Internal"
+msgstr ""
+
+msgid "Internal flash"
+msgstr ""
+
+msgid "Je\xc5\x9bli wybierzesz Tak, zostan\xc4\x85 przywr\xc3\xb3cone ustawienia obrazu pli \nMultibot zostanie tylko odinstalowany. \nBedziesz m\xc3\xb3g\xc5\x82 go zainstalowa\xc4\x87 ponownie"
+msgstr ""
+
+msgid "Keyboard"
+msgstr ""
+
+msgid "Kopia Zapasowa"
+msgstr ""
+
+msgid "Kopia Zapasowa NeoBoota"
+msgstr ""
+
+msgid "Kopia zapasowa zostanie zapisana w lokalizacji /media/neoboot. Trwa wykonywanie...."
+msgstr ""
+
+msgid "Kopie Zapasowe znajduj\xc4\x85 si\xc4\x99 w katalogu /media/neoboot/NeoBootImageBackup"
+msgstr ""
+
+msgid "Masz jeszcze wolne: "
+msgstr ""
+
+msgid "Masz zainstalowane nas\xc5\xa7\xc4\x99puj\xc4\x85ce obrazy"
+msgstr ""
+
+msgid "MB"
+msgstr ""
+
+msgid "Memory disc:"
+msgstr ""
+
+msgid "Menad\xc5\xbcer urz\xc4\x85dze\xc5\x84"
+msgstr ""
+
+msgid "MMC card"
+msgstr ""
+
+msgid "MONTOWANIE "
+msgstr ""
+
+msgid "More options"
+msgstr ""
+
+msgid "Mount"
+msgstr ""
+
+msgid "Mount Manager"
+msgstr ""
+
+msgid "Mount: "
+msgstr ""
+
+msgid "MOUNTING...."
+msgstr ""
+
+msgid "NeoBOOT"
+msgstr ""
+
+msgid "NeoBoot - Download Image"
+msgstr ""
+
+msgid "NeoBoot - Download OnLine Images"
+msgstr ""
+
+msgid "NEOBOOT - Please reinstall NeoBoot....\nPlease wait, done...\nrestart systemu..."
+msgstr ""
+
+msgid "NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted..."
+msgstr ""
+
+msgid "NEOBOOT - Restart image flash....\nPlease wait, in a moment the decoder will be restarted...\n"
+msgstr ""
+
+msgid "NeoBoot ...."
+msgstr ""
+
+msgid "NeoBoot ARM VU+...."
+msgstr ""
+
+msgid "NeoBoot ARM...."
+msgstr ""
+
+msgid "NeoBoot has detected update.\nDo you want to update NeoBoota now ?"
+msgstr ""
+
+msgid "NeoBoot installd kernel-image..."
+msgstr ""
+
+msgid "NeoBoot installd kernel-image... only from flash."
+msgstr ""
+
+msgid "NeoBoot is reinstall..."
+msgstr ""
+
+msgid "NeoBoot is running from:"
+msgstr ""
+
+msgid "NeoBoot is running image:"
+msgstr ""
+
+msgid "NeoBoot MIPS...."
+msgstr ""
+
+msgid "NeoBoot successfully updated IPTVPlayer.\nHave fun !!"
+msgstr ""
+
+msgid "NeoBoot successfully updated list tv.\nHave fun !!"
+msgstr ""
+
+msgid "NeoBoot successfully updated. You can restart the plugin now.\nHave fun !!"
+msgstr ""
+
+msgid "NeoBoot successfully updated. You can restart the plugin now.\nHave fun !!!"
+msgstr ""
+
+msgid "NeoBoot version: "
+msgstr ""
+
+msgid "NeoBoot wykryl niezgodnos kernela w flash, \nZainstalowac kernel dla flash image ? ?"
+msgstr ""
+
+msgid "NeoBoot...."
+msgstr ""
+
+msgid "NeoBoot: Deleting Image"
+msgstr ""
+
+msgid "NEOBoot: Install new image"
+msgstr ""
+
+msgid "NeoBoot: Kopia Zapasowa KOMPLETNA !"
+msgstr ""
+
+msgid "NeoBoot: Kopia Zapasowa Obrazu"
+msgstr ""
+
+msgid "NeoBoot: Restore Image"
+msgstr ""
+
+msgid "NeoBoot: Start image..."
+msgstr ""
+
+msgid "NeoBoot: Upgrading in progress\nPlease wait..."
+msgstr ""
+
+msgid "NeoBot - First use the Device Manager and mount the drives correctly !!!"
+msgstr ""
+
+msgid "NeoBot checks the connected media.\nWAIT ...\n\nDISCS:"
+msgstr ""
+
+msgid "NeoBot started installing new image.\n"
+msgstr ""
+
+msgid "NeoBot was removed !!! \nThe changes will be visible only after complete restart of the receiver."
+msgstr ""
+
+msgid "Network mount"
+msgstr ""
+
+msgid "Network mount %s"
+msgstr ""
+
+msgid "Nie wykryto odpowiedniego STB do instalacji !!!!"
+msgstr ""
+
+msgid "Niestety nie mo\xc5\xbcna wykona\xc4\x87 kopii zapasowej z flesza t\xc4\x85 wtyczk\xc4\x85\nZainstaluj backupsuite do kopii obrazu z pamieci flesza"
+msgstr ""
+
+msgid "No file location NeoBot, do re-install the plugin."
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Not enough disk space. Please free up some disk space and try again. (%d MB required, %d MB available)"
+msgstr ""
+
+msgid "Not enough free space on /media/neoboot/ !!\nYou need at least 500Mb free space.\n\nExit plugin."
+msgstr ""
+
+msgid "Number of images installed:"
+msgstr ""
+
+msgid "Odinstalowanie  NeoBoota"
+msgstr ""
+
+msgid "Odinstaluj"
+msgstr ""
+
+msgid "OK Start image..."
+msgstr ""
+
+msgid "OpenATV-6.0"
+msgstr ""
+
+msgid "OpenPLi"
+msgstr ""
+
+msgid "OpenVIX"
+msgstr ""
+
+msgid "Path BlackHole ? (Not recommended for VuPlus)"
+msgstr ""
+
+msgid "Please choose an image to boot"
+msgstr ""
+
+msgid "Please, wait...."
+msgstr ""
+
+msgid "Please, wait...\n"
+msgstr ""
+
+msgid "Please: DO NOT reboot your STB and turn off the power.\n"
+msgstr ""
+
+msgid "Plik volatile-media.sh w lokalizacji /etc/init.d/\nzostal zmianiony na volatile-media.sh.org"
+msgstr ""
+
+msgid "Plik volatile-media.sh.org w lokalizacji /etc/init.d/\nzostal zmianiony na org. naze volatile-media.sh"
+msgstr ""
+
+msgid "Podziekowania wszystkim tu niewspomnianym za udzielenie pomocy w ulepszaniu NeoBoota \n\n"
+msgstr ""
+
+msgid "Potwierdzenie kopii zapasowej"
+msgstr ""
+
+msgid "Potwierdzenie Przywracania"
+msgstr ""
+
+msgid "Potwierdzenie Usuni\xc4\x99cia"
+msgstr ""
+
+msgid "Prosz\xc4\x99 czeka\xc4\x87, NeoBoot dzia\xc5\x82a, wykonywanie kopii zapasowej moze zajac kilka chwil, proces w toku..."
+msgstr ""
+
+msgid "Przed przywracaniem sprawdz czy masz wolne miejsce na swoim urz\xc4\x85dzeniu - 300Mb \nCzy chcesz przywr\xc3\xb3ci\xc4\x87 ten obraz:\n "
+msgstr ""
+
+msgid "Przywr\xc3\xb3\xc4\x87 kopi\xc4\x99 obrazu do NeoBoota"
+msgstr ""
+
+msgid "Ram disk"
+msgstr ""
+
+msgid "Recovering setting....\n"
+msgstr ""
+
+msgid "Reinstalacja  NeoBoota"
+msgstr ""
+
+msgid "Reinstall NeoBoot"
+msgstr ""
+
+msgid "Reinstallation completed.!\nFull installation available only from the level Flash."
+msgstr ""
+
+msgid "Remove Image "
+msgstr ""
+
+msgid "Remove NeoBoot of STB"
+msgstr ""
+
+msgid "Removed successfully."
+msgstr ""
+
+msgid "Removing canceled!"
+msgstr ""
+
+msgid "Removing partition table"
+msgstr ""
+
+msgid "Repair FTP ? (Recommended only other image if it does not work.)"
+msgstr ""
+
+msgid "Rereading partition table"
+msgstr ""
+
+msgid "Restart GUI now ?"
+msgstr ""
+
+msgid "Restart GUI now?"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
+msgid "Return to installation..."
+msgstr ""
+
+msgid "Rezygnacja."
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Select OK to run the image."
+msgstr ""
+
+msgid "SetupMounts"
+msgstr ""
+
+msgid "Size: "
+msgstr ""
+
+msgid "Sorry it seems that there are not Linux formatted devices mounted on your STB. To install NeoBoot you need a Linux formatted part1 device. Click on the blue button to open Devices Panel"
+msgstr ""
+
+msgid "Sorry the name of the new Image is too long."
+msgstr ""
+
+msgid "Sorry this name is reserved. Choose another name for the new Image."
+msgstr ""
+
+msgid "Sorry you can delete only from the image Flash."
+msgstr ""
+
+msgid "Sorry you cannot delete Flash image"
+msgstr ""
+
+msgid "Sorry you cannot delete the image currently booted from."
+msgstr ""
+
+msgid "Sorry you cannot overwrite the image currently booted from. Please, boot from Flash to restore this backup."
+msgstr ""
+
+msgid "Sorry, an Image with the name "
+msgstr ""
+
+msgid "Sorry, IPTVPlayer not found."
+msgstr ""
+
+msgid "Sorry, NeoBoot can installed or upgraded only when booted from Flash STB"
+msgstr ""
+
+msgid "Sorry, NeoBoot can installed or upgraded only when booted from Flash."
+msgstr ""
+
+msgid "Sorry, there is not any connected devices in your STB.\nPlease connect HDD or USB to install NeoBoot!"
+msgstr ""
+
+msgid "Sorry: Wrong image in flash found. You have to install in flash Vu+ or Octagon-sf4008 Image !!!"
+msgstr ""
+
+msgid "Source Image file"
+msgstr ""
+
+msgid "Sprawdz poprawnosc instalacji neoboota"
+msgstr ""
+
+msgid "Start the chosen system now ?"
+msgstr ""
+
+msgid "Start the device manager ?"
+msgstr ""
+
+msgid "SuperBoot usuwanie plik\xc3\xb3w kopi zapasowej....."
+msgstr ""
+
+msgid "SuperBoot: Pliki kopii zapasowej usuni\xc4\x99te"
+msgstr ""
+
+msgid "Superboot: Restore COMPLETE !"
+msgstr ""
+
+msgid "TB"
+msgstr ""
+
+msgid "The authors plug NeoBot not liable for damage a receiver, NeoBoota incorrect use or installation of unauthorized additions or images.!!!\n\n"
+msgstr ""
+
+msgid "The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\nMake sure you select a valid partition type."
+msgstr ""
+
+msgid "The directory %s is not writable.\nMake sure you select a writable directory instead."
+msgstr ""
+
+msgid "The download neoboot update."
+msgstr ""
+
+msgid "The installation process may take a few minutes.\n"
+msgstr ""
+
+msgid "The operation has been canceled or meoboot is not running in stb VuPlus"
+msgstr ""
+
+msgid "The update has been canceled."
+msgstr ""
+
+msgid "The URL to this image is not correct !!"
+msgstr ""
+
+msgid "This Device is already mounted as HDD."
+msgstr ""
+
+msgid "Type: "
+msgstr ""
+
+msgid "Udanej zabawy :)\n\n"
+msgstr ""
+
+msgid "unavailable"
+msgstr ""
+
+msgid "undefined"
+msgstr ""
+
+msgid "Unfortunately, at the moment not found an update, try again later."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Unmount"
+msgstr ""
+
+msgid "Update neoboot in all images ?"
+msgstr ""
+
+msgid "Update NeoBot"
+msgstr ""
+
+msgid "Updated unnecessary, you have the latest version. Please try again later."
+msgstr ""
+
+msgid "Updating ... "
+msgstr ""
+
+msgid "Uruchom"
+msgstr ""
+
+msgid "Uruchom - Red"
+msgstr ""
+
+msgid "USB stick"
+msgstr ""
+
+msgid "USB: "
+msgstr ""
+
+msgid "Used: "
+msgstr ""
+
+msgid "Usuniecie hasla do root."
+msgstr ""
+
+msgid "Usuwanie pobranych obraz\xc3\xb3w...."
+msgstr ""
+
+msgid "Usu\xc5\x84 image ZIP z katalogu ImagesUpload  "
+msgstr ""
+
+msgid "Version update: "
+msgstr ""
+
+msgid "Wait please while scanning for devices..."
+msgstr ""
+
+msgid "Wait please while scanning your %s %s devices...n\\ Szukam dysku..."
+msgstr ""
+
+msgid "Wait please, NeoBoot is working: ....Restore in progress...."
+msgstr ""
+
+msgid "Waiting"
+msgstr ""
+
+msgid "Waiting for mount"
+msgstr ""
+
+msgid "Waiting for partition"
+msgstr ""
+
+msgid "WARNING !!! First, mount the device."
+msgstr ""
+
+msgid "WARNING !: The update brings with it the risk of errors.\n"
+msgstr ""
+
+msgid "Welcome to NeoBoot %s Plugin installation."
+msgstr ""
+
+msgid "Wspierane tunery sat"
+msgstr ""
+
+msgid "Wybierz kopi\xc4\x99 kt\xc3\xb3r\xc4\x85 chcesz przywr\xc3\xb3ci\xc4\x87"
+msgstr ""
+
+msgid "Wybierz obraz do przywr\xc3\xb3cenia lub usuni\xc4\x99cia:\n "
+msgstr ""
+
+msgid "Wybierz obraz z kt\xc3\xb3rego chcesz zrobi\xc4\x87 kopie"
+msgstr ""
+
+msgid "Wybierz Tak, by przeinstalowac neoboota.\n     NEOBOOT."
+msgstr ""
+
+msgid "Wybierz Tak, start image z podmiana kernel lub Nie bez wczytywania kernel.\n Zmiana kernel zalecane dla vuplus."
+msgstr ""
+
+msgid "Wybierz:\n Tak - start image z podmiana kernel (zalecane dla VUPLUS.)\n\nWybierz:\nNie - bez wgrywania kernel( Nie zalecane).\n "
+msgstr ""
+
+msgid "Wyczy\xc5\x9b\xc4\x87"
+msgstr ""
+
+msgid "Wygląda na to że model STB nie jest wpierany przez NEOBOOT !!! "
+msgstr ""
+
+msgid "Wygląda na to że multiboot nie wspiera tego modelu STB !!! "
+msgstr ""
+
+msgid "Wykonac kompletna kopie NeoBoota ?"
+msgstr ""
+
+msgid "Wykonaj kopi\xc4\x99 obrazu z NeoBoota"
+msgstr ""
+
+msgid "Wykona\xc4\x87 kopi\xc4\x99 obrazu:"
+msgstr ""
+
+msgid "You have to provide a name for the new Image."
+msgstr ""
+
+msgid "You have to select one Image to install.\nPlease, upload your zip file in the folder: /media/neoboot/ImagesUpload and select the image to install."
+msgstr ""
+
+msgid "Zahaszuj montowanie VolatileMedia "
+msgstr ""
+
+msgid "Zainstaluj"
+msgstr ""
+
+msgid "Zainstaluj ponownie neoboota ?"
+msgstr ""
+
+msgid "Zaktualizuj NeoBoota na wszystkich obrazach."
+msgstr ""
+
+msgid "Zmienic montowanie ?\n\nWybierz Tak by zmienic.\nWybierz Nie by porzucic zmiany lub przywrocic."
+msgstr ""
+
+msgid "[NeoBoot] The /media/neoboot/ImagesUpload directory is EMPTY !!!\nPlease upload the image files in .ZIP or .NFI formats to install."
+msgstr ""
+
+msgid "[NeoBoot] The /media/neoboot/ImagesUpload directory is EMPTY !!!\nPlease upload the image files in .ZIP or .NFI formats to install.\n"
+msgstr ""
+
+msgid "[NeoBoot] Uwaga!!! po poprawnym starcie wybranego oprogramowania w neoboot,\nnalezy uruchomic NEOBOOTA by potwierdzic prawidlowy start image.\n\nNacisnij OK lub exit na pilocie by kontynuowac...\n\n\n"
+msgstr ""
+
+msgid "[NeoBoot] \nError, you have neoboot installed on usb and hdd, \nUninstall one directories from one drive !!!\n"
+msgstr ""
+
+msgid "[NeoBoot]Prosze czeka\xc4\x87, aktualizacja w toku..."
+msgstr ""
+
+msgid "\n ... q(-_-)p ...\nNeoBot to function properly need additional packages.\nSelect Yes and wait ...\nProces installation may take a few moments ...\nInstall ?"
+msgstr ""
+
+msgid "\nCompletely uninstall NeoBota: \nIf you think NeoBot not you need it, you can uninstall it.\nTo uninstall now press the red button on the remote control.\n\n"
+msgstr ""
+
+msgid "\nDelete ?"
+msgstr ""
